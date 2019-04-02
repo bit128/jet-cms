@@ -20,9 +20,9 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public String newContent(String fid, String defaultTitle) {
         int sort = 1;
-        Map<String, String> sortMap = contentMapper.findNewSort(fid);
-        if (sortMap != null) {
-            sort = Integer.parseInt(sortMap.get("sort"));
+        Map<String, Integer> map = contentMapper.findNewSort(fid);
+        if (map != null){
+            sort = map.get("sort") + 1;
         }
         ContentBean content = new ContentBean();
         content.setId(DateTools.uniqid());
@@ -30,13 +30,12 @@ public class ContentServiceImpl implements ContentService {
         content.setTitle(defaultTitle);
         content.setCreateTime(Calendar.getInstance().getTimeInMillis()/1000);
         content.setSort(sort);
-        content.setState(ContentBean.STATE_HIDE);
         contentMapper.addContent(content);
         return content.getId();
     }
 
     @Override
     public ContentBean getContent(String id) {
-        return null;
+        return contentMapper.findContentById(id);
     }
 }

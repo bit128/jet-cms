@@ -11,16 +11,16 @@ public class ContentBean implements Serializable {
     public final static int STATE_HOT   = 2;
 
     private String id;
-    private String fid;
-    private String cover;
-    private String title;
-    private String keyword;
-    private String data;
-    private String detail;
-    private int sort;
-    private long createTime;
-    private long changeTime;
-    private int state;
+    private String fid = "";
+    private String cover = "";
+    private String title = "";
+    private String keyword = "";
+    private String data = "{}";
+    private String detail = "";
+    private int sort = 0;
+    private long createTime = 0;
+    private long changeTime = 0;
+    private int state = STATE_HIDE;
 
     public String getId() {
         return this.id;

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lanxin.pandora.ContentMapper">
-    <select id="findNewSort" parameterType="String" resultType="map">
-        select sort from content where fid=#{value} order by sort desc limit 1
+<mapper namespace="com.lanxin.pandora.mappers.ContentMapper">
+    <select id="findNewSort" parameterType="string" resultType="map">
+        select sort from content where fid=#{fid} order by sort desc limit 1
     </select>
     <insert id="addContent" parameterType="com.lanxin.pandora.beans.ContentBean">
-        insert info content values (#{id},#{fid},#{cover},#{title},#{keyword},#{data},#{detail},#{sort},#{createTime},#{changeTime},#{state})
+        insert into content (id,fid,cover,title,keyword,data,detail,sort,createTime,changeTime,state) 
+        values (#{id},#{fid},#{cover},#{title},#{keyword},#{data},#{detail},#{sort},#{createTime},#{changeTime},#{state})
     </insert>
-    <select id="findContentById" parameterType="String" resultType="com.lanxin.pandora.beans.ContentBean">
-        select * from content where id=#{value}
+    <select id="findContentById" parameterType="string" resultType="com.lanxin.pandora.beans.ContentBean">
+        select * from content where id=#{id}
     </select>
 </mapper>

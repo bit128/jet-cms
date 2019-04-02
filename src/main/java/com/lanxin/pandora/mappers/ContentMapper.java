@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ContentMapper {
-    public Map<String, String> findNewSort(String fid);
+    public Map<String, Integer> findNewSort(String fid);
     public void addContent(ContentBean content);
     public ContentBean findContentById(String id);
 }
