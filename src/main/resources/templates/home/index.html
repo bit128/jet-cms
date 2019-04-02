@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Dashboard.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        .menu {
+            margin-top: 20px;
+        }
+        .menu a {
+            display: block;
+            margin: 10px;
+            padding: 20px;
+            background: linear-gradient(to left top, #eeeeee, #f9f9f9);
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 2px 2px 4px #ddd;
+        }
+
+        .menu a:hover {
+            background: linear-gradient(to left top, #c0edff, #f9f9f9);
+        }
+        .menu a img {
+            width: 50%;
+        }
+        .menu-name {
+            font-size: 16px;
+            color: #0095cf;
+            padding: 6px 0 4px;
+            font-weight: bold;
+        }
+        .menu-role {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span th:include="home/_nav"></span>
+        <div class="container">
+            <div class="alert alert-info">
+                <p><b>拥有权限：</b>管理员 用户 内容 超级 | <b>最后登录时间：</b>2019-04-01 13:56 | <b>最后登录地址：</b>127.0.0.1</p>
+                <p><b>服务器时间：</b>(北京) 2019-04-02 13:53:50 | <b>时间戳：</b>1554184430 </p>
+            </div>
+            <div class="menu">
+                <div class="pure-g">
+                    <div class="pure-u-1-6">
+                        <a th:href="@{home/channel}">
+                            <img th:src="@{/images/png-0814.png}" />
+                            <div class="menu-name">栏目内容</div>
+                            <div class="menu-role">[权限：内容]</div>
+                        </a>
+                    </div>
+                    <div class="pure-u-1-6">
+                        <a href="">
+                            <img th:src="@{/images/png-0841.png}" />
+                            <div class="menu-name">资源</div>
+                            <div class="menu-role">[权限：资源]</div>
+                        </a>
+                    </div>
+                    <div class="pure-u-1-6">
+                        <a href="">
+                            <img th:src="@{/images/png-0017.png}" />
+                            <div class="menu-name">关键词</div>
+                            <div class="menu-role">[权限：内容]</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

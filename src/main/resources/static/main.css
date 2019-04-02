@@ -1,0 +1,177 @@
+/**
+* jet-sdk css
+* ======
+* @author 洪波
+* @version 19.01.11
+*/
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s;
+  }
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+	font-size: 14px;
+}
+
+.container {
+	margin-top: 50px;
+	padding: 20px 50px;
+}
+
+.btn-xs {
+	font-size: 70%;
+}
+.btn-sm {
+	font-size: 85%;
+}
+.btn-lr {
+	font-size: 110%;
+}
+.btn-xl {
+	font-size: 125%;
+}
+.btn-green,
+.btn-red,
+.btn-orange,
+.btn-blue {
+	color: white;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.btn-green {
+	background: rgb(49, 201, 85); /* this is a green */
+}
+.btn-red {
+	background: rgb(238, 77, 77); /* this is a maroon */
+}
+.btn-orange {
+	background: rgb(248, 186, 71); /* this is an orange */
+}
+.btn-blue {
+	background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.inline {
+	display: inline;
+}
+.block {
+	display: block !important;
+}
+
+.text-center {
+	text-align: center;
+}
+.text-right {
+	text-align: right !important;
+}
+.pull-right {
+	float: right !important;
+}
+.pull-left {
+	float: left !important;
+}
+
+.nav {
+	height: 50px;
+	background-color: #eee;
+	border-bottom: 1px solid #ddd;
+	
+}
+.nav-warp {
+	padding: 0 50px;
+}
+.nav-fixed-top {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+.nav-title {
+	font-size: 18px;
+	padding: 10px 20px 0 0;
+	color: #666;
+}
+.nav-title,.nav-menu {
+	float: left;
+}
+.nav-menu {
+	padding: 0;
+	margin: 0;
+}
+.nav-menu li {
+	margin: 0;
+	float: left;
+	list-style: none;
+}
+.nav-menu li a {
+	display: block;
+	font-size: 16px;
+	text-decoration: none;
+	color: #888;
+	padding: 14px 20px;
+	margin-right: 1px;
+}
+.nav-menu li.active a {
+	background-color: #ddd;
+	color: #666;
+}
+.nav-menu li a:hover {
+	background-color: #ddd;
+}
+
+.alert {
+	padding: 10px 20px;
+	border-radius: 8px;
+}
+.alert p {
+	margin: 5px 0 5px;
+	font-size: 12px;
+}
+.alert-info {
+	background: #c0edff;
+	color: #0095cf;
+	border: 1px solid #74cef1;
+}
+
+.table {
+	width: 100%;
+	color: #666;
+}
+.table th {
+	border: 1px solid #ddd;
+	border-bottom: 2px solid #ccc;
+	padding: 8px 0;
+	background-color: #f6f6f6;
+}
+.table td {
+	padding: 8px;
+	text-align: left;
+	border: 1px solid #ddd;
+}
+
+.breadcrumb {
+	font-size: 12px;
+	padding: 6px 20px;
+	background: #f5f5f5;
+	border-radius: 5px;
+}
+.breadcrumb ul {
+	margin: 0;
+	padding: 0;
+}
+.breadcrumb ul li {
+	display: inline-block;
+	list-style: none;
+	color: #ccc;
+}
+.breadcrumb ul li a {
+	color: #0095cf;
+	text-decoration: none;
+}
+.breadcrumb ul li label {
+	color: #666;
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Dashboard.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        table {
+            width: 100%;
+            color: #666;
+        }
+        table td {
+            vertical-align: top;
+            font-size: 12px !important;
+        }
+        .c-img {
+            width: 98px;;
+        }
+        .c-id {
+            color: #999;
+        }
+        .c-title {
+            padding: 4px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .c-keyword {
+            color: #0095cf;
+        }
+        .c-sort {
+            font-size: 14px;
+            padding-top: 10px;
+        }
+        .c-state {
+            font-size: 14px;
+            height: 28px;
+        }
+        .c-btns button {
+            width: 100%;
+        }
+        .c-btns-item {
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span th:include="home/_nav"></span>
+        <div class="container">
+            <div class="pure-g">
+                <div class="pure-u-1-4">
+                    <button type="button" class="pure-button btn-sm btn-blue"> 创建栏目内容</button>
+                </div>
+                <div class="pure-u-1-2">
+                    <div class="breadcrumb">
+                        <ul>
+                            <li>/ <a href="">根目录</a></li>
+                            <li>/ <label>我的文件夹</label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pure-u-1-4 text-right">
+                    <div class="pure-form">
+                        <input type="text" class="pure-input">
+                        <button type="button" class="pure-button btn-sm">搜索</button>
+                    </div>
+                </div>
+            </div>
+            <table class="pure-table pure-table-horizontal" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">封面</th>
+                        <th>标题</th>
+                        <th style="width:150px;">时间</th>
+                        <th style="width:100px;">排序</th>
+                        <th style="width:100px;">状态</th>
+                        <th style="width:200px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="c-img" th:src="@{/images/default.jpg}" /></td>
+                        <td>
+                            <div class="c-id">编号：<b>5ca1870e4fd6e</b></div>
+                            <div class="c-title">新栏目的标题</div>
+                            <div class="c-keyword">设置关键词</div>
+                        </td>
+                        <td class="c-time">
+                            <div><b>创建：</b>2019-04-02 12:34</div>
+                            <div><b>变更：</b>2019-04-02 12:34</div>
+                        </td>
+                        <td><div class="c-sort">18</div></td>
+                        <td>
+                            <select class="c-state">
+                                <option value="0">状态0</option>
+                                <option value="1">状态1</option>
+                                <option value="2">状态2</option>
+                            </select>
+                        </td>
+                        <td class="c-btns">
+                            <div class="pure-g">
+                                <div class="pure-u-1-4">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">移动</button></div>
+                                </div>
+                                <div class="pure-u-1-4">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">资源</button></div>
+                                </div>
+                                <div class="pure-u-1-4">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">扩展</button></div>
+                                </div>
+                                <div class="pure-u-1-4">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm btn-orange">删除</button></div>
+                                </div>
+                                <div class="pure-u-1-2">
+                                    <div class="c-btns-item"><button type="button" class="pure-button">成员列表</button></div>
+                                </div>
+                                <div class="pure-u-1-2">
+                                    <div class="c-btns-item"><button type="button" class="pure-button">编辑内容</button></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {}
+    });
+</script>
+</html>
