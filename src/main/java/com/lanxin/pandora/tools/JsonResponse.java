@@ -12,6 +12,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JsonResponse {
 
 	public final static int RES_UNKNOW			= 0;	//未知

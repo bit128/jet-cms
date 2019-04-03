@@ -7,18 +7,50 @@
     <title>Pandora Dashboard.</title>
     <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/main.js}"></script>
     <script type="text/javascript" th:src="@{/vue-min.js}"></script>
     <style>
-        table {
+        .input {
+            border: none;
+            border-bottom: 1px solid #aaa;
             width: 100%;
-            color: #666;
+            padding: 10px 0;
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
         }
-        table td {
-            vertical-align: top;
-            font-size: 12px !important;
+        .input-sm {
+            padding: 6px 0;
+            font-size: 14px;
+        }
+        .textarea {
+            border: 1px solid #aaa;
+            width: 100%;
+            height: 80px;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+        .legend {
+            margin: 10px 0;
+            border-left: 3px solid #0095cf;
+            font-size: 16px;
+            color: #666;
+            padding-left: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background: #0095cf;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 6px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .input:focus {
+            border-color: #0095cf;
         }
         .c-img {
-            width: 98px;;
+            width: 98px;
         }
         .c-id {
             color: #999;
@@ -53,7 +85,7 @@
         <div class="container">
             <div class="pure-g">
                 <div class="pure-u-1-4">
-                    <button type="button" class="pure-button btn-sm btn-blue"> 创建栏目内容</button>
+                    <button type="button" class="pure-button btn-sm btn-blue" v-on:click="newContent()"> 创建栏目内容</button>
                 </div>
                 <div class="pure-u-1-2">
                     <div class="breadcrumb">
@@ -70,7 +102,7 @@
                     </div>
                 </div>
             </div>
-            <table class="pure-table pure-table-horizontal" style="margin-top: 10px;">
+            <table class="table" style="margin-top:10px;">
                 <thead>
                     <tr>
                         <th style="width:100px;">封面</th>
@@ -82,23 +114,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="(item, index) in contentList">
                         <td><img class="c-img" th:src="@{/images/default.jpg}" /></td>
                         <td>
-                            <div class="c-id">编号：<b>5ca1870e4fd6e</b></div>
-                            <div class="c-title">新栏目的标题</div>
-                            <div class="c-keyword">设置关键词</div>
+                            <div class="c-id">编号：<b>{{item.id}}</b></div>
+                            <div class="c-title">{{item.title}}</div>
+                            <div class="c-keyword">没有关键词</div>
                         </td>
                         <td class="c-time">
-                            <div><b>创建：</b>2019-04-02 12:34</div>
-                            <div><b>变更：</b>2019-04-02 12:34</div>
+                            <div><b>创建：</b>{{dateFormat('y-m-d h:i', item.createTime*1000)}}</div>
+                            <div><b>变更：</b>{{item.changeTime==0?'未变化':dateFormat('y-m-d h:i', item.changeTime*1000)}}</div>
                         </td>
-                        <td><div class="c-sort">18</div></td>
+                        <td><div class="c-sort">{{item.sort}}</div></td>
                         <td>
                             <select class="c-state">
-                                <option value="0">状态0</option>
-                                <option value="1">状态1</option>
-                                <option value="2">状态2</option>
+                                <option value="0" v-bind:selected="item.state==0">状态0</option>
+                                <option value="1" v-bind:selected="item.state==1">状态1</option>
+                                <option value="2" v-bind:selected="item.state==2">状态2</option>
                             </select>
                         </td>
                         <td class="c-btns">
@@ -113,10 +145,10 @@
                                     <div class="c-btns-item"><button type="button" class="pure-button btn-sm">扩展</button></div>
                                 </div>
                                 <div class="pure-u-1-4">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm btn-orange">删除</button></div>
+                                    <div class="c-btns-item"><button v-on:click="deleteContent(item.id)" type="button" class="pure-button btn-sm btn-orange">删除</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button type="button" class="pure-button">成员列表</button></div>
+                                    <div class="c-btns-item"><button v-on:click="editContent(item.id, index)" type="button" class="pure-button">编辑</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button type="button" class="pure-button">编辑内容</button></div>
@@ -127,12 +159,109 @@
                 </tbody>
             </table>
         </div>
+        <transition name="fade">
+            <div class="modal" v-show="editMode">
+                <div class="modal-wrap">
+                    <div class="modal-title">编辑内容</div>
+                    <div class="modal-content">
+                        <legend class="legend">设置标题</legend>
+                        <input type="text" class="input" value="新建栏目内容" v-model="editData.title"/>
+                        <legend class="legend">设置关键词 <small>(多个词请使用空格隔开)</small></legend>
+                        <input type="text" class="input input-sm" v-model="editData.keyword" />
+                        <legend class="legend">设置扩展字段</legend>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:30%;">字段名称</th>
+                                    <th style="width:60%;">数据内容</th>
+                                    <th style="width:10%;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value, key) in editData.extData">
+                                    <td>{{key}}</td>
+                                    <td>{{value}}</td>
+                                    <td><button type="button" class="pure-button btn-xs btn-orange">删除字段</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-center">
+                            <button type="button" class="pure-button btn-sm btn-blue">插入新字段行</button>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button v-on:click="finishEdit()" type="button" class="pure-button">关闭</button>
+                        <button type="button" class="pure-button btn-green">保存</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </body>
 <script>
+    const LIMIT = 10;
+    const DEFAULT_NAME = '新建栏目内容';
     const vue = new Vue({
         el: '#app',
-        data: {}
+        data: {
+            offset: 0,
+            id: '',
+            fid: '',
+            editMode: false,
+            editData: {
+                title: 'contents',
+                keyword: 'aa bb',
+                extData: {"extName":"bit128"}
+            },
+            contentList: []
+        },
+        methods: {
+            newContent: function(){
+                httpRequest(
+                    '/content/add.do',
+                    {fid: vue.fid, title: DEFAULT_NAME},
+                    function(res){
+                        if (res.code == 1) {
+                            location.reload();
+                        }
+                    },
+                    'json'
+                );
+            },
+            editContent: function(id, index){
+                this.editMode = true;
+            },
+            finishEdit: function(){
+                this.editMode = false;
+            },
+            loadContentList: function(){
+                httpRequest(
+                    '/content/getList.do',
+                    {offset: vue.offset, limit: LIMIT, fid: vue.fid},
+                    function(res){
+                        if (res.code == 1) {
+                            vue.contentList = res.result;
+                        }
+                    },
+                    'json'
+                )
+            },
+            deleteContent: function(id) {
+                if (confirm('确定要删除该栏目吗？')) {
+                    httpRequest(
+                        '/content/delete.do',
+                        {id: id},
+                        function(res){
+                            if (res.code == 1) {
+                                location.reload();
+                            }
+                        },
+                        'json'
+                    )
+                }
+            }
+        }
     });
+    vue.loadContentList();
 </script>
 </html>

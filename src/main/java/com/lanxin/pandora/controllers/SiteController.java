@@ -1,7 +1,6 @@
 package com.lanxin.pandora.controllers;
 
 import com.lanxin.pandora.beans.ContentBean;
-import com.lanxin.pandora.mappers.ContentMapper;
 import com.lanxin.pandora.service.ContentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,15 @@ public class SiteController {
         return "version: 1.0 alpha.";
     }
 
+    /*
+    @RequestMapping("insert")
+    public String newContent() {
+        return contentService.newContent("", "新建栏目内容");
+    }*/
+
     @RequestMapping("test")
     public String test() {
-        ContentBean content = contentService.getContent("169dddea4ecfb");
+        ContentBean content = contentService.get("169e0ef0bf15f");
         if (content != null) {
             return content.getTitle();
         }
