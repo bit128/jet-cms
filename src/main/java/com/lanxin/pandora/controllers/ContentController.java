@@ -20,15 +20,22 @@ public class ContentController {
     @Autowired
     private ContentService contentService;
 
-    @RequestMapping(value="/add.do",method=RequestMethod.POST)
+    @RequestMapping(value = "/add.do", method = RequestMethod.POST)
     public void add(HttpServletResponse response, String fid, String title) {
         jsonResponse.setContext(response);
         jsonResponse.write(contentService.insert(fid, title));
     }
 
-    @RequestMapping(value="/getList.do",method=RequestMethod.POST)
+    @RequestMapping(value = "/getList.do", method = RequestMethod.POST)
     public void getList(HttpServletResponse response, String fid, int offset, int limit) {
         jsonResponse.setContext(response);
         jsonResponse.write(contentService.getList(offset, limit, fid));
+    }
+
+    @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
+    public void delete(HttpServletResponse response, String id) {
+        contentService.delete(id);
+        jsonResponse.setContext(response);
+        jsonResponse.write(JsonResponse.RES_OK);
     }
 }

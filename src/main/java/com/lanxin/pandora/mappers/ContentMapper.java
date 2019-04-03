@@ -14,4 +14,5 @@ public interface ContentMapper {
     public void insert(ContentBean content);
     public ContentBean query(String id);
     public List<ContentBean> queryList(Criteria criteria);
+    public void delete(String id);
 }

@@ -77,6 +77,18 @@
         .c-btns-item {
             padding: 2px;
         }
+        .extra-field td {
+            padding: 0 10px;
+        }
+        .extra-field input {
+            margin: 0;
+            padding: 6px 0;
+            width: 100%;
+            border: none;
+        }
+        .extra-field button {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -141,14 +153,11 @@
                                 <div class="pure-u-1-4">
                                     <div class="c-btns-item"><button type="button" class="pure-button btn-sm">资源</button></div>
                                 </div>
-                                <div class="pure-u-1-4">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">扩展</button></div>
-                                </div>
-                                <div class="pure-u-1-4">
+                                <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button v-on:click="deleteContent(item.id)" type="button" class="pure-button btn-sm btn-orange">删除</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button v-on:click="editContent(item.id, index)" type="button" class="pure-button">编辑</button></div>
+                                    <div class="c-btns-item"><button v-on:click="editContent(item.id, index)" type="button" class="pure-button btn-blue">编辑</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button type="button" class="pure-button">编辑内容</button></div>
@@ -177,16 +186,16 @@
                                     <th style="width:10%;">操作</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="extra-field">
                                 <tr v-for="(value, key) in editData.extData">
-                                    <td>{{key}}</td>
-                                    <td>{{value}}</td>
-                                    <td><button type="button" class="pure-button btn-xs btn-orange">删除字段</button></td>
+                                    <td><input type="text" v-bind:value="key" v-on:blur="changeExtraField(true, key, value, $event)"></td>
+                                    <td><input type="text" v-bind:value="value" v-on:blur="changeExtraField(false, key, value, $event)"></td>
+                                    <td><button v-on:click="deleteExtraField(key)" type="button" class="pure-button btn-xs btn-orange">删除字段</button></td>
                                 </tr>
                             </tbody>
                         </table>
                         <p class="text-center">
-                            <button type="button" class="pure-button btn-sm btn-blue">插入新字段行</button>
+                            <button v-on:click="insertExtraField()" type="button" class="pure-button btn-sm btn-blue">插入新字段行</button>
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -209,9 +218,9 @@
             fid: '',
             editMode: false,
             editData: {
-                title: 'contents',
-                keyword: 'aa bb',
-                extData: {"extName":"bit128"}
+                title: '',
+                keyword: '',
+                extData: {}
             },
             contentList: []
         },
@@ -229,10 +238,36 @@
                 );
             },
             editContent: function(id, index){
+                let data = this.contentList[index];
+                this.editData.title = data.title;
+                this.editData.keyword = data.keyword;
                 this.editMode = true;
             },
             finishEdit: function(){
                 this.editMode = false;
+            },
+            insertExtraField: function(){
+                let fieldName = 'default';
+                let c = 0;
+                while (this.editData.extData[fieldName]) {
+                    fieldName = 'default';
+                    fieldName += ++c;
+                }
+                this.$set(this.editData.extData, fieldName, '');
+            },
+            changeExtraField: function(isField, field, value, event){
+                let inputVal = event.originalTarget.value;
+                if (isField) {
+                    if (inputVal != field) {
+                        this.deleteExtraField(field);
+                        this.$set(this.editData.extData, inputVal, value);
+                    }
+                } else if (inputVal != value) {
+                    this.$set(this.editData.extData, field, inputVal);
+                }
+            },
+            deleteExtraField: function(field) {
+                this.$delete(this.editData.extData, field, undefined);
             },
             loadContentList: function(){
                 httpRequest(

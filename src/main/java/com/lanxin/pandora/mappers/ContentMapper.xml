@@ -17,4 +17,7 @@
         <if test="order!=''">order by ${order}</if>
         limit ${offset}, ${limit}
     </select>
+    <delete id="delete" parameterType="String">
+        delete from content where id=#{id}
+    </delete>
 </mapper>

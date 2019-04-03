@@ -50,4 +50,9 @@ public class ContentServiceImpl implements ContentService {
         criteria.setOrder("sort desc");
         return contentMapper.queryList(criteria);
     }
+
+    @Override
+    public void delete(String id) {
+        contentMapper.delete(id);
+    }
 }

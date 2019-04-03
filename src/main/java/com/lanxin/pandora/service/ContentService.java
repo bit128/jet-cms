@@ -8,4 +8,5 @@ public interface ContentService {
     public String insert(String fid, String title);
     public ContentBean get(String id);
     public List<ContentBean> getList(int offset, int limit, String fid);
+    public void delete(String id);
 }
