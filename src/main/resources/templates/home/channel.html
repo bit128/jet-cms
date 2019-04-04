@@ -37,14 +37,8 @@
             color: #666;
             padding-left: 10px;
         }
-        .tag {
-            display: inline-block;
-            background: #0095cf;
-            color: #fff;
-            font-size: 12px;
-            padding: 2px 6px;
-            text-decoration: none;
-            border-radius: 5px;
+        .legend small {
+            color: rgb(189, 163, 91);
         }
         .input:focus {
             border-color: #0095cf;
@@ -92,6 +86,9 @@
         }
         .extra-field button {
             width: 100%;
+        }
+        .insert-extra {
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -150,17 +147,14 @@
                         </td>
                         <td class="c-btns">
                             <div class="pure-g">
-                                <div class="pure-u-1-4">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">移动</button></div>
-                                </div>
-                                <div class="pure-u-1-4">
+                                <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button type="button" class="pure-button btn-sm">资源</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button v-on:click="deleteContent(item.id)" type="button" class="pure-button btn-sm btn-orange">删除</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button v-on:click="editContent(index)" type="button" class="pure-button btn-blue">编辑</button></div>
+                                    <div class="c-btns-item"><button v-on:click="editContent(index)" type="button" class="pure-button">编辑栏目</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button type="button" class="pure-button">编辑内容</button></div>
@@ -170,15 +164,17 @@
                     </tr>
                 </tbody>
             </table>
+            <pagination size="5"></pagination>
         </div>
         <transition name="fade">
             <div class="modal" v-show="editMode">
-                <div class="modal-wrap">
+                <div class="modal-wrap" style="width:600px;">
                     <div class="modal-title">编辑内容</div>
                     <div class="modal-content">
                         <legend class="legend">设置标题</legend>
-                        <input type="text" class="input" value="新建栏目内容" v-model="editData.title"/>
-
+                        <input type="text" class="input" v-model="editData.title"/>
+                        <legend class="legend">设置所属栏目</legend>
+                        <input type="text" class="input input-sm" v-model="editData.fid"/>
                         <div class="pure-g">
                             <div class="pure-u-1-2">
                                 <legend class="legend">设置关键词 <small>(多个词请使用空格隔开)</small></legend>
@@ -207,9 +203,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="text-center">
-                            <button v-on:click="insertExtraField()" type="button" class="pure-button btn-sm btn-blue">插入新字段行</button>
-                        </p>
+                        <button v-on:click="insertExtraField()" type="button" class="insert-extra pure-button btn-sm btn-blue">插入新字段行</button>
                     </div>
                     <div class="modal-footer">
                         <button v-on:click="finishEdit()" type="button" class="pure-button">关闭</button>
@@ -224,6 +218,22 @@
     const LIMIT         = 10;
     const BC_LEVEL      = 3;
     const DEFAULT_NAME  = '新建栏目内容';
+    var Pagination = {
+        data: function(){
+            return {
+                checked: 2,
+                pages: [1,2,3,4,5]
+            }
+        },
+        methods: {
+            render: function(){
+                console.log('-->render.');
+            }
+        },
+        template: '<div class="pagination"><ul><li><a href="javascript:;">&lt;</a></li>'
+            + '<li v-bind:class="{active: checked==item}" v-for="item in pages"><a href="javascript:;">{{item}}</a></li>'
+            + '<li><a href="javascript:;">&gt;</a></li></ul></div>'
+    };
     const vue = new Vue({
         el: '#app',
         data: {
@@ -233,12 +243,16 @@
             editMode: false,
             editData: {
                 id: '',
+                fid: '',
                 title: '',
                 keyword: '',
                 sort: 0,
                 extData: {}
             },
             contentList: []
+        },
+        components: {
+            pagination: Pagination
         },
         methods: {
             newContent: function(){
@@ -253,9 +267,16 @@
                     'json'
                 );
             },
+            moveContent: function(id) {
+                this.moveMode = true;
+            },
+            finishMove: function(){
+                this.moveMode = false;
+            },
             editContent: function(index){
                 let data = this.contentList[index];
                 this.editData.id = data.id;
+                this.editData.fid = data.fid;
                 this.editData.title = data.title;
                 this.editData.keyword = data.keyword;
                 this.editData.sort = data.sort;
@@ -293,6 +314,7 @@
                     '/content/updateInfo.do',
                     {
                         id: vue.editData.id,
+                        fid: vue.editData.fid,
                         title: vue.editData.title,
                         keyword: vue.editData.keyword,
                         sort: vue.editData.sort,

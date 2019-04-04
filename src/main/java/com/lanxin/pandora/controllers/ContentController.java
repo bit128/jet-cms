@@ -39,6 +39,7 @@ public class ContentController {
     public void updateInfo(HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", request.getParameter("id"));
+        data.put("fid", request.getParameter("fid"));
         data.put("title", request.getParameter("title"));
         data.put("keyword", request.getParameter("keyword"));
         data.put("sort", request.getParameter("sort"));

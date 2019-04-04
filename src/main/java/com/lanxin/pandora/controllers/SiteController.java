@@ -29,7 +29,7 @@ public class SiteController {
         return contentService.newContent("", "新建栏目内容");
     }*/
 
-    @RequestMapping("test")
+    @RequestMapping("/test")
     public String test() {
         ContentBean content = contentService.get("169e0ef0bf15f");
         if (content != null) {

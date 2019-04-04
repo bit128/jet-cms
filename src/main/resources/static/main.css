@@ -174,6 +174,48 @@ body {
 	color: #666;
 	text-decoration: none;
 }
+.breadcrumb ul li a:hover {
+	color: #0095cf;
+}
+
+.pagination {
+	margin: 10px 0;
+}
+.pagination ul {
+	margin: 0;
+	padding: 0;
+}
+.pagination ul li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 2px;
+}
+.pagination ul li a {
+	display: inline-block;
+	height: 22px;
+	width: 32px;
+	font-size: 14px;
+	padding-top: 9px;
+	text-align: center;
+	background-color: #f6f6f6;
+	border: 1px solid #ddd;
+	color: #999;
+	text-decoration: none;
+	border-radius: 2px;
+}
+.pagination ul li a:hover {
+	background-color: #eee;
+}
+.pagination ul li.active a {
+	background-color: #c0edff;
+	color: #0095cf;
+	border-color: #74cef1 !important;
+}
+.pagination ul li.active a:hover {
+	background-color: #74cef1;
+	color: #fff;
+	border-color: #74cef1 !important;
+}
 
 .modal {
 	position: fixed;
