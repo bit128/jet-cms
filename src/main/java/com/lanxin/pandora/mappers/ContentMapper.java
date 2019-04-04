@@ -7,6 +7,7 @@ import com.lanxin.pandora.beans.ContentBean;
 import com.lanxin.pandora.tools.Criteria;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ContentMapper {
@@ -14,5 +15,6 @@ public interface ContentMapper {
     public void insert(ContentBean content);
     public ContentBean query(String id);
     public List<ContentBean> queryList(Criteria criteria);
-    public void delete(String id);
+    public int updateInfo(@Param("map") Map<String, Object> data);
+    public int delete(String id);
 }

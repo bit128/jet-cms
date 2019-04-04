@@ -55,13 +55,17 @@
         .c-id {
             color: #999;
         }
-        .c-title {
+        .c-title a {
             padding: 4px 0;
             font-size: 16px;
             font-weight: bold;
+            color: #0095cf;
+        }
+        .c-title a:hover {
+            color: #00709c;
         }
         .c-keyword {
-            color: #0095cf;
+            color: #333;
         }
         .c-sort {
             font-size: 14px;
@@ -102,8 +106,7 @@
                 <div class="pure-u-1-2">
                     <div class="breadcrumb">
                         <ul>
-                            <li>/ <a href="">根目录</a></li>
-                            <li>/ <label>我的文件夹</label></li>
+                            <li v-for="item in breadcrumb" v-on:click="changeFid(item.split('^')[0])">/ <a href="javascript:;">{{item.split('^')[1]}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -130,8 +133,8 @@
                         <td><img class="c-img" th:src="@{/images/default.jpg}" /></td>
                         <td>
                             <div class="c-id">编号：<b>{{item.id}}</b></div>
-                            <div class="c-title">{{item.title}}</div>
-                            <div class="c-keyword">没有关键词</div>
+                            <div class="c-title"><a href="javascript:;" v-on:click="changeFid(item.id)">{{item.title}}</a></div>
+                            <div class="c-keyword">{{item.keyword || '未设置关键词'}}</div>
                         </td>
                         <td class="c-time">
                             <div><b>创建：</b>{{dateFormat('y-m-d h:i', item.createTime*1000)}}</div>
@@ -139,10 +142,10 @@
                         </td>
                         <td><div class="c-sort">{{item.sort}}</div></td>
                         <td>
-                            <select class="c-state">
-                                <option value="0" v-bind:selected="item.state==0">状态0</option>
-                                <option value="1" v-bind:selected="item.state==1">状态1</option>
-                                <option value="2" v-bind:selected="item.state==2">状态2</option>
+                            <select class="c-state" v-on:change="setStatus(item.id, $event)">
+                                <option value="0" v-bind:selected="item.status==0">状态0</option>
+                                <option value="1" v-bind:selected="item.status==1">状态1</option>
+                                <option value="2" v-bind:selected="item.status==2">状态2</option>
                             </select>
                         </td>
                         <td class="c-btns">
@@ -157,7 +160,7 @@
                                     <div class="c-btns-item"><button v-on:click="deleteContent(item.id)" type="button" class="pure-button btn-sm btn-orange">删除</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button v-on:click="editContent(item.id, index)" type="button" class="pure-button btn-blue">编辑</button></div>
+                                    <div class="c-btns-item"><button v-on:click="editContent(index)" type="button" class="pure-button btn-blue">编辑</button></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button type="button" class="pure-button">编辑内容</button></div>
@@ -175,8 +178,18 @@
                     <div class="modal-content">
                         <legend class="legend">设置标题</legend>
                         <input type="text" class="input" value="新建栏目内容" v-model="editData.title"/>
-                        <legend class="legend">设置关键词 <small>(多个词请使用空格隔开)</small></legend>
-                        <input type="text" class="input input-sm" v-model="editData.keyword" />
+
+                        <div class="pure-g">
+                            <div class="pure-u-1-2">
+                                <legend class="legend">设置关键词 <small>(多个词请使用空格隔开)</small></legend>
+                                <input type="text" class="input input-sm" v-model="editData.keyword" />
+                            </div>
+                            <div class="pure-u-1-6"></div>
+                            <div class="pure-u-1-3">
+                                <legend class="legend">设置排序</legend>
+                                <input type="text" class="input input-sm" v-model="editData.sort" />
+                            </div>
+                        </div>
                         <legend class="legend">设置扩展字段</legend>
                         <table class="table">
                             <thead>
@@ -200,7 +213,7 @@
                     </div>
                     <div class="modal-footer">
                         <button v-on:click="finishEdit()" type="button" class="pure-button">关闭</button>
-                        <button type="button" class="pure-button btn-green">保存</button>
+                        <button v-on:click="updateInfo()" type="button" class="pure-button btn-green">保存</button>
                     </div>
                 </div>
             </div>
@@ -208,18 +221,21 @@
     </div>
 </body>
 <script>
-    const LIMIT = 10;
-    const DEFAULT_NAME = '新建栏目内容';
+    const LIMIT         = 10;
+    const BC_LEVEL      = 3;
+    const DEFAULT_NAME  = '新建栏目内容';
     const vue = new Vue({
         el: '#app',
         data: {
             offset: 0,
-            id: '',
             fid: '',
+            breadcrumb: [],
             editMode: false,
             editData: {
+                id: '',
                 title: '',
                 keyword: '',
+                sort: 0,
                 extData: {}
             },
             contentList: []
@@ -231,26 +247,29 @@
                     {fid: vue.fid, title: DEFAULT_NAME},
                     function(res){
                         if (res.code == 1) {
-                            location.reload();
+                            vue.loadContentList()
                         }
                     },
                     'json'
                 );
             },
-            editContent: function(id, index){
+            editContent: function(index){
                 let data = this.contentList[index];
+                this.editData.id = data.id;
                 this.editData.title = data.title;
                 this.editData.keyword = data.keyword;
+                this.editData.sort = data.sort;
+                this.editData.extData = JSON.parse(data.data);
                 this.editMode = true;
             },
             finishEdit: function(){
                 this.editMode = false;
             },
             insertExtraField: function(){
-                let fieldName = 'default';
+                let fieldName = 'field';
                 let c = 0;
                 while (this.editData.extData[fieldName]) {
-                    fieldName = 'default';
+                    fieldName = 'field';
                     fieldName += ++c;
                 }
                 this.$set(this.editData.extData, fieldName, '');
@@ -269,9 +288,39 @@
             deleteExtraField: function(field) {
                 this.$delete(this.editData.extData, field, undefined);
             },
+            updateInfo: function(){
+                httpRequest(
+                    '/content/updateInfo.do',
+                    {
+                        id: vue.editData.id,
+                        title: vue.editData.title,
+                        keyword: vue.editData.keyword,
+                        sort: vue.editData.sort,
+                        data: JSON.stringify(vue.editData.extData)
+                    },
+                    function(res){
+                        if (res.code == 1) {
+                            vue.editMode = false;
+                            vue.loadContentList();
+                        }
+                    },
+                    'json'
+                );
+            },
+            setStatus: function(id, event) {
+                httpRequest(
+                    '/content/setStatus.do',
+                    {id: id, status: event.originalTarget.value},
+                    function(res) {}
+                );
+            },
+            changeFid: function(fid){
+                this.fid = fid;
+                this.loadContentList();
+            },
             loadContentList: function(){
                 httpRequest(
-                    '/content/getList.do',
+                    '/content/getSimpleList.do',
                     {offset: vue.offset, limit: LIMIT, fid: vue.fid},
                     function(res){
                         if (res.code == 1) {
@@ -279,7 +328,17 @@
                         }
                     },
                     'json'
-                )
+                );
+                httpRequest(
+                    '/content/getBreadcrumb.do',
+                    {id: vue.fid, level: BC_LEVEL},
+                    function(res){
+                        if (res.code == 1) {
+                            vue.breadcrumb = ['^根目录'].concat(res.result);
+                        }
+                    },
+                    'json'
+                );
             },
             deleteContent: function(id) {
                 if (confirm('确定要删除该栏目吗？')) {
@@ -288,11 +347,11 @@
                         {id: id},
                         function(res){
                             if (res.code == 1) {
-                                location.reload();
+                                vue.loadContentList();
                             }
                         },
                         'json'
-                    )
+                    );
                 }
             }
         }

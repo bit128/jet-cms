@@ -71,9 +71,11 @@ const dateFormat = function(format, time){
         let s = format.charAt(i);
         if (dateDict[s]) {
             dateStr += dateDict[s] < 10 ? '0'+dateDict[s] : dateDict[s];
+        } else if (dateDict[s] == 0) {
+            dateStr += '00';
         } else {
             dateStr += s;
-        }  
+        }
     }
     return dateStr;
 };

@@ -5,8 +5,8 @@
         select sort from content where fid=#{fid} order by sort desc limit 1
     </select>
     <insert id="insert" parameterType="com.lanxin.pandora.beans.ContentBean">
-        insert into content (id,fid,cover,title,keyword,data,detail,sort,createTime,changeTime,state) 
-        values (#{id},#{fid},#{cover},#{title},#{keyword},#{data},#{detail},#{sort},#{createTime},#{changeTime},#{state})
+        insert into content (id,fid,cover,title,keyword,data,detail,sort,createTime,changeTime,status) 
+        values (#{id},#{fid},#{cover},#{title},#{keyword},#{data},#{detail},#{sort},#{createTime},#{changeTime},#{status})
     </insert>
     <select id="query" parameterType="String" resultType="com.lanxin.pandora.beans.ContentBean">
         select * from content where id=#{id}
@@ -17,6 +17,17 @@
         <if test="order!=''">order by ${order}</if>
         limit ${offset}, ${limit}
     </select>
+    <update id="updateInfo" parameterType="Map">
+        update content set
+        <foreach collection="map" item="value" index="key" separator=",">
+            <if test="key!='id'">
+                ${key}=#{value}
+            </if>
+        </foreach>
+        <where>
+            id=#{map.id}
+        </where>
+    </update>
     <delete id="delete" parameterType="String">
         delete from content where id=#{id}
     </delete>

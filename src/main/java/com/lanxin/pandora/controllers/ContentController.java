@@ -1,5 +1,8 @@
 package com.lanxin.pandora.controllers;
 
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lanxin.pandora.service.ContentService;
@@ -15,27 +18,47 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ContentController {
 
     @Autowired
-    private JsonResponse jsonResponse;
-
-    @Autowired
     private ContentService contentService;
 
     @RequestMapping(value = "/add.do", method = RequestMethod.POST)
     public void add(HttpServletResponse response, String fid, String title) {
-        jsonResponse.setContext(response);
-        jsonResponse.write(contentService.insert(fid, title));
+        new JsonResponse(response).write(contentService.insert(fid, title));
     }
 
-    @RequestMapping(value = "/getList.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/getBreadcrumb.do", method = RequestMethod.POST)
+    public void getBreadcrumb(HttpServletResponse response, String id, int level) {
+        new JsonResponse(response).write(contentService.getBreadcrumb(id, level));
+    }
+
+    @RequestMapping(value = "/getSimpleList.do", method = RequestMethod.POST)
     public void getList(HttpServletResponse response, String fid, int offset, int limit) {
-        jsonResponse.setContext(response);
-        jsonResponse.write(contentService.getList(offset, limit, fid));
+        new JsonResponse(response).write(contentService.getSimpleList(offset, limit, fid));
+    }
+
+    @RequestMapping(value = "/updateInfo.do", method = RequestMethod.POST)
+    public void updateInfo(HttpServletRequest request, HttpServletResponse response) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", request.getParameter("id"));
+        data.put("title", request.getParameter("title"));
+        data.put("keyword", request.getParameter("keyword"));
+        data.put("sort", request.getParameter("sort"));
+        data.put("data", request.getParameter("data"));
+        contentService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
+    }
+
+    @RequestMapping(value = "/setStatus.do", method = RequestMethod.POST)
+    public void setStatus(HttpServletResponse response, String id, int status) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("status", status);
+        contentService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
     }
 
     @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     public void delete(HttpServletResponse response, String id) {
         contentService.delete(id);
-        jsonResponse.setContext(response);
-        jsonResponse.write(JsonResponse.RES_OK);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
     }
 }

@@ -33,7 +33,7 @@ CREATE TABLE `content` (
   `sort` int(11) NOT NULL,
   `createTime` int(11) NOT NULL,
   `changeTime` int(11) NOT NULL,
-  `state` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -44,6 +44,7 @@ CREATE TABLE `content` (
 
 LOCK TABLES `content` WRITE;
 /*!40000 ALTER TABLE `content` DISABLE KEYS */;
+INSERT INTO `content` VALUES ('169e0ef0bf15f','','','2019世界拉力锦标赛实况','拉力 WRC 赛场实况','{\"url\":\"http://www.baidu.com\"}','',2,1554256956,1554354452,2),('169e1b734878e','','','我的市场细分2','简单 灯饰','{\"name\":\"hongbo\",\"age\":\"30\",\"job\":\"程序员\"}','',5,1554270073,1554354237,1),('169e6c479317c','169e1b734878e','','二级内容','','{}','',1,1554354829,1554355147,1),('169e6c9d688a6','169e6c479317c','','三级栏目内容','','{}','',1,1554355181,1554355194,0),('169e70bc9708a','169e6c9d688a6','','新建栏目内容','','{}','',1,1554359503,0,0);
 /*!40000 ALTER TABLE `content` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-02 16:55:42
+-- Dump completed on 2019-04-04 14:46:21

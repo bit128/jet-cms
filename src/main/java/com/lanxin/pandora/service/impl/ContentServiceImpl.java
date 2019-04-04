@@ -1,5 +1,6 @@
 package com.lanxin.pandora.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +43,37 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<ContentBean> getList(int offset, int limit, String fid) {
+    public List<String> getBreadcrumb(String id, int level) {
+        ArrayList<String> array = new ArrayList<>();
+        ContentBean contentBean = contentMapper.query(id);
+        if (contentBean != null) {
+            array.add(contentBean.getId() + "^"+contentBean.getTitle());
+            while (--level > 0) {
+                contentBean = contentMapper.query(contentBean.getFid());
+                if (contentBean == null) {
+                    break;
+                }
+                array.add(0, contentBean.getId() + "^"+contentBean.getTitle());
+            }
+        }
+        return array;
+    }
+
+    @Override
+    public List<ContentBean> getSimpleList(int offset, int limit, String fid) {
         Criteria criteria = new Criteria();
+        criteria.setSelect("id,fid,cover,title,keyword,data,sort,createTime,changeTime,status");
         criteria.add("fid", fid);
         criteria.setOffset(offset);
         criteria.setLimit(limit);
         criteria.setOrder("sort desc");
         return contentMapper.queryList(criteria);
+    }
+
+    @Override
+    public void updateInfo(Map<String, Object> data) {
+        data.put("changeTime", Calendar.getInstance().getTimeInMillis() / 1000);
+        contentMapper.updateInfo(data);
     }
 
     @Override

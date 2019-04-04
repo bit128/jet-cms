@@ -20,7 +20,7 @@ public class ContentBean implements Serializable {
     private int sort = 0;
     private long createTime = 0;
     private long changeTime = 0;
-    private int state = STATE_HIDE;
+    private int status = STATE_HIDE;
 
     public String getId() {
         return this.id;
@@ -102,12 +102,12 @@ public class ContentBean implements Serializable {
         this.changeTime = changeTime;
     }
 
-    public int getState() {
-        return this.state;
+    public int getStatus() {
+        return this.status;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
 }
