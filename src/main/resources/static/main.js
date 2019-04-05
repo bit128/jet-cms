@@ -79,3 +79,92 @@ const dateFormat = function(format, time){
     }
     return dateStr;
 };
+/**
+ * Vue组件 分页视图
+ */
+var Pagination = {
+    data: function(){
+        return {
+            current: 1,
+            size: 5,
+            pages: [],
+            allPage: 0,
+            limit: 10,
+            callback: null
+        }
+    },
+    methods: {
+        init(limit, size) {
+            this.limit = limit || 10;
+            this.size = size || 5;
+        },
+        onPage: function(page){
+            this.current = parseInt(page);
+            this.render();
+            if (this.page != 0 && this.callback != null) {
+                this.callback(page);
+            }
+        },
+        setCallback: function(callback){
+            this.callback = callback;
+        },
+        setData: function(allCount) {
+            this.allPage = Math.ceil(allCount / this.limit);
+            if (this.current > this.allPage) {
+                this.current = 1;
+            }
+            this.render();
+        },
+        render: function(){
+            if (this.allPage > 0) {
+                let pages = [];
+                if (this.current == 1) {
+                    let num = 1;
+                    let c = 1;
+                    while (num <= this.allPage) {
+                        pages.push(num);
+                        num++;
+                        if (++c > this.size) {
+                            break;
+                        }
+                    }
+                } else if (this.current == this.allPage) {
+                    let num = this.allPage;
+                    let c = 1;
+                    while (num > 0) {
+                        pages.push(num);
+                        num--;
+                        if (++c > this.size) {
+                            break;
+                        }
+                    }
+                    pages = pages.reverse();
+                } else {
+                    let num = this.current;
+                    let c = 1;
+                    while (num > 0) {
+                        pages.push(num);
+                        num--;
+                        if (++c > this.size) {
+                            break;
+                        }
+                    }
+                    pages = pages.reverse();
+                    num = this.current + 1;
+                    c = 1;
+                    while (num <= this.allPage) {
+                        pages.push(num);
+                        num++;
+                        if (++c > this.size) {
+                            break;
+                        }
+                    }
+                }
+                this.pages = pages;
+            }
+        }
+    },
+    template: '<div class="pagination"><ul><li v-on:click="onPage(1)"><a href="javascript:;">&lt;</a></li>'
+        + '<li v-on:click="onPage(item)" v-bind:class="{active: current==item}" v-for="item in pages"><a href="javascript:;">{{item}}</a></li>'
+        + '<li v-on:click="onPage(allPage)"><a href="javascript:;">&gt;</a></li></ul></div>'
+};

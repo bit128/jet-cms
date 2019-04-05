@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pandora Dashboard.</title>
+    <title>Pandora Channel.</title>
     <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
     <script type="text/javascript" th:src="@{/main.js}"></script>
@@ -164,7 +164,7 @@
                     </tr>
                 </tbody>
             </table>
-            <pagination size="5"></pagination>
+            <pagination ref="pageView"></pagination>
         </div>
         <transition name="fade">
             <div class="modal" v-show="editMode">
@@ -215,25 +215,9 @@
     </div>
 </body>
 <script>
-    const LIMIT         = 10;
+    const LIMIT         = 5;
     const BC_LEVEL      = 3;
     const DEFAULT_NAME  = '新建栏目内容';
-    var Pagination = {
-        data: function(){
-            return {
-                checked: 2,
-                pages: [1,2,3,4,5]
-            }
-        },
-        methods: {
-            render: function(){
-                console.log('-->render.');
-            }
-        },
-        template: '<div class="pagination"><ul><li><a href="javascript:;">&lt;</a></li>'
-            + '<li v-bind:class="{active: checked==item}" v-for="item in pages"><a href="javascript:;">{{item}}</a></li>'
-            + '<li><a href="javascript:;">&gt;</a></li></ul></div>'
-    };
     const vue = new Vue({
         el: '#app',
         data: {
@@ -255,23 +239,26 @@
             pagination: Pagination
         },
         methods: {
+            init: function(){
+                this.$refs['pageView'].init(LIMIT, 5);
+                this.$refs['pageView'].setCallback(function(page){
+                    vue.offset = (page - 1) * LIMIT;
+                    vue.loadContentList();
+                });
+                this.loadContentList();
+            },
             newContent: function(){
                 httpRequest(
                     '/content/add.do',
                     {fid: vue.fid, title: DEFAULT_NAME},
                     function(res){
                         if (res.code == 1) {
+                            vue.offset = 0;
                             vue.loadContentList()
                         }
                     },
                     'json'
                 );
-            },
-            moveContent: function(id) {
-                this.moveMode = true;
-            },
-            finishMove: function(){
-                this.moveMode = false;
             },
             editContent: function(index){
                 let data = this.contentList[index];
@@ -338,9 +325,20 @@
             },
             changeFid: function(fid){
                 this.fid = fid;
+                this.offset = 0;
                 this.loadContentList();
             },
             loadContentList: function(){
+                httpRequest(
+                    '/content/getCount.do',
+                    {fid: vue.fid},
+                    function(res) {
+                        if (res.code == 1) {
+                            vue.$refs['pageView'].setData(res.result);
+                        }
+                    },
+                    'json'
+                );
                 httpRequest(
                     '/content/getSimpleList.do',
                     {offset: vue.offset, limit: LIMIT, fid: vue.fid},
@@ -378,6 +376,6 @@
             }
         }
     });
-    vue.loadContentList();
+    vue.init();
 </script>
 </html>

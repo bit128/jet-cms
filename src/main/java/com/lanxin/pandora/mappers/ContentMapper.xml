@@ -8,6 +8,10 @@
         insert into content (id,fid,cover,title,keyword,data,detail,sort,createTime,changeTime,status) 
         values (#{id},#{fid},#{cover},#{title},#{keyword},#{data},#{detail},#{sort},#{createTime},#{changeTime},#{status})
     </insert>
+    <select id="count" parameterType="com.lanxin.pandora.tools.Criteria" resultType="int">
+        select count(*) from content
+        <if test="condition!=''">where ${condition}</if>
+    </select>
     <select id="query" parameterType="String" resultType="com.lanxin.pandora.beans.ContentBean">
         select * from content where id=#{id}
     </select>

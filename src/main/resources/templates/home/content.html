@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Content.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/main.js}"></script>
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        body {
+        background-color: #eeeeee;
+        }
+        #note_editor {
+            margin-top: 10px;
+            font-size:16px;
+            color:#666;
+            min-height: 460px;
+            height: auto;
+            width:100%;
+            padding:10px;
+            background: #fff;
+            outline:none;
+        }
+        #note_editor textarea {
+            border: 1px solid #eee;
+        }
+        .btn-orange {
+            background-color: #fa6800;
+            color: #fff;
+        }
+        .btn-orange:hover {
+            background-color: #fa5500;
+            color: #fff;
+        }
+        .btn-grew {
+            background-color: #eee;
+            color: #333;
+        }
+        .btn-grew:hover {
+            background-color: #fa5500;
+            color: #fff;
+        }
+        .cbtn-list {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .cbtn {
+            width: 40px;
+            height: 40px;
+            padding-top: 9px;
+            font-size: 16px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: inline-block;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 0 5px #ddd;
+            margin-right: 5px;
+            outline: none !important;
+        }
+        .cbtn:hover {
+            color: #fa6800;
+            box-shadow: 0 0 10px #fa6800;
+        }
+        .cbtn:active {
+            color: #fa6800;
+        }
+        .cbtn-active {
+            background-color: #fa6800;
+            color: #fff !important;
+        }
+        .cbtn-big {
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            padding-top: 15px;
+        }
+        .btn-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span th:include="home/_nav"></span>
+        <div class="container">
+            <div class="pure-g">
+                <div class="pure-u-1-4">
+                    <div id="note_btns">
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="cbtn" title="代码模式" data-val="0">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn cbtn-big" title="保存">
+                                <span class="glyphicon glyphicon-save"></span>
+                            </a>
+                        </div>
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="cbtn" title="大标题">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="中标题">
+                                <span class="glyphicon glyphicon-align-justify"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="小标题">
+                                <span class="glyphicon glyphicon-list"></span>
+                            </a>
+                        </div>
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="cbtn" title="左对齐">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="居中">
+                                <span class="glyphicon glyphicon-align-center"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="右对齐">
+                                <span class="glyphicon glyphicon-align-right"></span>
+                            </a>
+                        </div>
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="cbtn" title="粗体">
+                                <span class="glyphicon glyphicon-bold"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="斜体">
+                                <span class="glyphicon glyphicon-italic"></span>
+                            </a>
+                        </div>
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="cbtn" title="插入资源" data-toggle="modal" data-target="#file_box">
+                                <span class="glyphicon glyphicon-font"></span>
+                            </a>
+                            <a href="javascript:;" class="cbtn" title="插入表格" data-toggle="modal" data-target="#table_box">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </a>
+                        </div>
+                        <div class="cbtn-list">
+                            <a href="javascript:;" class="btn-color" data-val="666666" style="background-color:#666666;box-shadow:0 0 3px #666666;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="FF6666" style="background-color:#FF6666;box-shadow:0 0 3px #FF6666;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="0099CC" style="background-color:#0099CC;box-shadow:0 0 3px #0099CC;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="FFCC00" style="background-color:#FFCC00;box-shadow:0 0 3px #FFCC00;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="669933" style="background-color:#669933;box-shadow:0 0 3px #669933;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="996600" style="background-color:#996600;box-shadow:0 0 3px #996600;"></a>
+                            <a href="javascript:;" class="btn-color" data-val="993399" style="background-color:#993399;box-shadow:0 0 3px #993399;"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pure-u-3-4">
+                    <div id="note_editor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            id: '[[${cid}]]'
+        }
+    });
+</script>
+</html>

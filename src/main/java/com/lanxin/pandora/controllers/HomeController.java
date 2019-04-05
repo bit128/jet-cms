@@ -1,6 +1,8 @@
 package com.lanxin.pandora.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -15,5 +17,11 @@ public class HomeController {
     @RequestMapping("/channel")
     public String channel() {
         return "home/channel";
+    }
+
+    @RequestMapping(value = "/content/id/{id}")
+    public String content(@PathVariable String id, ModelMap data) {
+        data.put("cid", id);
+        return "home/content";
     }
 }

@@ -30,6 +30,16 @@ public class ContentController {
         new JsonResponse(response).write(contentService.getBreadcrumb(id, level));
     }
 
+    @RequestMapping(value = "/getCount.do", method = RequestMethod.POST)
+    public void getItemCount(HttpServletResponse response, String fid) {
+        new JsonResponse(response).write(JsonResponse.RES_OK, contentService.count(fid)+"", null);
+    }
+
+    @RequestMapping(value = "/get.do", method = RequestMethod.GET)
+    public void get(HttpServletResponse response, String id) {
+        new JsonResponse(response).write(contentService.get(id));
+    }
+
     @RequestMapping(value = "/getSimpleList.do", method = RequestMethod.POST)
     public void getList(HttpServletResponse response, String fid, int offset, int limit) {
         new JsonResponse(response).write(contentService.getSimpleList(offset, limit, fid));

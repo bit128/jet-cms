@@ -7,6 +7,7 @@ import com.lanxin.pandora.beans.ContentBean;
 
 public interface ContentService {
     public String insert(String fid, String title);
+    public int count(String fid);
     public ContentBean get(String id);
     public List<String> getBreadcrumb(String id, int level);
     public List<ContentBean> getSimpleList(int offset, int limit, String fid);

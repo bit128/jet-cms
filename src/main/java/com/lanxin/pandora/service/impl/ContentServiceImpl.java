@@ -38,6 +38,13 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    public int count(String fid) {
+        Criteria criteria = new Criteria();
+        criteria.add("fid", fid);
+        return contentMapper.count(criteria);
+    }
+
+    @Override
     public ContentBean get(String id) {
         return contentMapper.query(id);
     }
