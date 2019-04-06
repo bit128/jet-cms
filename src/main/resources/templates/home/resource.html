@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Dashboard.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        #fileInput {
+            position: absolute;
+            filter: alpha(opacity=0);
+            opacity:0;
+            width:114px;
+            height:34px;
+        }
+        .c-btns-item {
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span th:include="home/_nav"></span>
+        <div class="container">
+            <div class="pure-g">
+                <div class="pure-u-1-2" id="uploadFile">
+                    <input id="fileInput" type="file" name="file_name">
+                    <button type="button" class="pure-button btn-blue">上传资源文件</button>
+                </div>
+                <div class="pure-u-1-4">
+                    文件总数：<b>{{allCount}}</b> 个
+                </div>
+                <div class="pure-u-1-4 text-right">
+                    <div class="pure-form">
+                        <input type="text" class="pure-input">
+                        <button type="button" class="pure-button">搜索</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>类型</th>
+                        <th>存储路径</th>
+                        <th>占用空间</th>
+                        <th>创建时间</th>
+                        <th>排序</th>
+                        <th style="width:150px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="pure-g">
+                                <div class="pure-u-1-2">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm pure-u-1">设为封面</button></div>
+                                </div>
+                                <div class="pure-u-1-2">
+                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm btn-orange pure-u-1">删除</button></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            allCount: 0
+        }
+    });
+</script>
+</html>

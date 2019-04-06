@@ -23,6 +23,30 @@ body {
 	padding: 20px 50px;
 }
 
+.content-title-xl {
+	font-size:30px;
+	color:#333;
+}
+.content-title-md {
+	font-size:26px;
+	color:#666;
+}
+.content-title-sm {
+	font-size:20px;
+	color:#996600;
+}
+.content-table {
+	width: 100%;
+}
+.content-table thead {
+	background-color: #eee;
+}
+.content-table th,.content-table td {
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	text-align: left;
+}
+
 .btn-xs {
 	font-size: 70%;
 }
@@ -139,6 +163,7 @@ body {
 
 .table {
 	width: 100%;
+	margin-top: 10px;
 	color: #666;
 	font-size: 12px;
 }
@@ -246,4 +271,31 @@ body {
 	padding: 10px 20px;
 	text-align: right;
 	border-top: 1px solid #ccc;
+}
+
+.legend {
+	margin: 10px 0;
+	border-left: 3px solid #0095cf;
+	font-size: 16px;
+	color: #666;
+	padding-left: 10px;
+}
+.legend small {
+	color: rgb(189, 163, 91);
+}
+.input {
+	border: none;
+	border-bottom: 1px solid #aaa;
+	width: 100%;
+	padding: 10px 0;
+	font-size: 20px;
+	color: #333;
+	margin-bottom: 10px;
+}
+.input-sm {
+	padding: 6px 0;
+	font-size: 14px;
+}
+.input:focus {
+	border-color: #0095cf;
 }

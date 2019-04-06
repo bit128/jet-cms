@@ -5,11 +5,13 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lanxin.pandora.beans.ContentBean;
 import com.lanxin.pandora.service.ContentService;
 import com.lanxin.pandora.tools.JsonResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -35,9 +37,14 @@ public class ContentController {
         new JsonResponse(response).write(JsonResponse.RES_OK, contentService.count(fid)+"", null);
     }
 
-    @RequestMapping(value = "/get.do", method = RequestMethod.GET)
-    public void get(HttpServletResponse response, String id) {
-        new JsonResponse(response).write(contentService.get(id));
+    @RequestMapping(value = "/get.do/id/{id}", method = RequestMethod.GET)
+    public void get(HttpServletResponse response, @PathVariable String id) {
+        ContentBean content = contentService.get(id);
+        if (content != null) {
+            new JsonResponse(response).write(content);
+        } else {
+            new JsonResponse(response).write(JsonResponse.RES_FAIL, null, "内容不存在");
+        }
     }
 
     @RequestMapping(value = "/getSimpleList.do", method = RequestMethod.POST)
@@ -54,6 +61,15 @@ public class ContentController {
         data.put("keyword", request.getParameter("keyword"));
         data.put("sort", request.getParameter("sort"));
         data.put("data", request.getParameter("data"));
+        contentService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
+    }
+
+    @RequestMapping(value = "/saveDetail.do", method = RequestMethod.POST)
+    public void updateAttribute(HttpServletResponse response, String id, String detail){
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("detail", detail);
         contentService.updateInfo(data);
         new JsonResponse(response).write(JsonResponse.RES_OK);
     }

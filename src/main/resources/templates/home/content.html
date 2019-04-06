@@ -13,7 +13,7 @@
         body {
         background-color: #eeeeee;
         }
-        #note_editor {
+        #noteEditor {
             margin-top: 10px;
             font-size:16px;
             color:#666;
@@ -24,65 +24,38 @@
             background: #fff;
             outline:none;
         }
-        #note_editor textarea {
+        #noteEditor textarea {
             border: 1px solid #eee;
-        }
-        .btn-orange {
-            background-color: #fa6800;
-            color: #fff;
-        }
-        .btn-orange:hover {
-            background-color: #fa5500;
-            color: #fff;
-        }
-        .btn-grew {
-            background-color: #eee;
-            color: #333;
-        }
-        .btn-grew:hover {
-            background-color: #fa5500;
-            color: #fff;
-        }
+        }   
         .cbtn-list {
             text-align: center;
-            margin-top: 16px;
-        }
-        .cbtn {
-            width: 40px;
-            height: 40px;
-            padding-top: 9px;
-            font-size: 16px;
-            border-radius: 50%;
-            background-color: #fff;
-            display: inline-block;
-            text-align: center;
-            color: #666;
-            box-shadow: 0 0 5px #ddd;
-            margin-right: 5px;
-            outline: none !important;
-        }
-        .cbtn:hover {
-            color: #fa6800;
-            box-shadow: 0 0 10px #fa6800;
-        }
-        .cbtn:active {
-            color: #fa6800;
-        }
-        .cbtn-active {
-            background-color: #fa6800;
-            color: #fff !important;
-        }
-        .cbtn-big {
-            width: 60px;
-            height: 60px;
-            font-size: 20px;
-            padding-top: 15px;
+            margin-top: 20px;
         }
         .btn-color {
             width: 20px;
             height: 20px;
             border-radius: 50%;
             display: inline-block;
+            opacity: 0.9;
+            margin-right: 5px;
+        }
+        .btn-color:hover {
+            opacity: 1.0;
+        }
+        textarea {
+            width: 100%;
+        }
+        .input-wrap {
+            padding: 10px;
+        }
+        .input-wrap input {
+            text-align: center;
+        }
+        .legends {
+            text-align: center;
+            font-size: 16px;
+            color: #0095cf;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -92,77 +65,201 @@
         <div class="container">
             <div class="pure-g">
                 <div class="pure-u-1-4">
-                    <div id="note_btns">
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="cbtn" title="代码模式" data-val="0">
-                                <span class="glyphicon glyphicon-list-alt"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn cbtn-big" title="保存">
-                                <span class="glyphicon glyphicon-save"></span>
-                            </a>
-                        </div>
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="cbtn" title="大标题">
-                                <span class="glyphicon glyphicon-th-list"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="中标题">
-                                <span class="glyphicon glyphicon-align-justify"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="小标题">
-                                <span class="glyphicon glyphicon-list"></span>
-                            </a>
-                        </div>
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="cbtn" title="左对齐">
-                                <span class="glyphicon glyphicon-align-left"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="居中">
-                                <span class="glyphicon glyphicon-align-center"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="右对齐">
-                                <span class="glyphicon glyphicon-align-right"></span>
-                            </a>
-                        </div>
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="cbtn" title="粗体">
-                                <span class="glyphicon glyphicon-bold"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="斜体">
-                                <span class="glyphicon glyphicon-italic"></span>
-                            </a>
-                        </div>
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="cbtn" title="插入资源" data-toggle="modal" data-target="#file_box">
-                                <span class="glyphicon glyphicon-font"></span>
-                            </a>
-                            <a href="javascript:;" class="cbtn" title="插入表格" data-toggle="modal" data-target="#table_box">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </a>
-                        </div>
-                        <div class="cbtn-list">
-                            <a href="javascript:;" class="btn-color" data-val="666666" style="background-color:#666666;box-shadow:0 0 3px #666666;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="FF6666" style="background-color:#FF6666;box-shadow:0 0 3px #FF6666;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="0099CC" style="background-color:#0099CC;box-shadow:0 0 3px #0099CC;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="FFCC00" style="background-color:#FFCC00;box-shadow:0 0 3px #FFCC00;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="669933" style="background-color:#669933;box-shadow:0 0 3px #669933;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="996600" style="background-color:#996600;box-shadow:0 0 3px #996600;"></a>
-                            <a href="javascript:;" class="btn-color" data-val="993399" style="background-color:#993399;box-shadow:0 0 3px #993399;"></a>
-                        </div>
+                    <div class="cbtn-list">
+                        <button v-on:click="codeView()" type="button" class="pure-button" v-bind:class="{'btn-blue': codeMode}">代码模式</button>
+                        <button v-on:click="writeContent()" type="button" class="pure-button btn-xl">保存</button>
                     </div>
+                    <span v-if="!codeMode">
+                        <div class="cbtn-list">
+                            <button v-on:click="documentOpt(1)" type="button" class="pure-button">大标题</button>
+                            <button v-on:click="documentOpt(2)" type="button" class="pure-button">中标题</button>
+                            <button v-on:click="documentOpt(3)" type="button" class="pure-button">小标题</button>
+                        </div>
+                        <div class="cbtn-list">
+                            <button v-on:click="documentOpt(4)" type="button" class="pure-button">左对齐</button>
+                            <button v-on:click="documentOpt(5)" type="button" class="pure-button">居中</button>
+                            <button v-on:click="documentOpt(6)" type="button" class="pure-button">右对齐</button>
+                        </div>
+                        <div class="cbtn-list">
+                            <button v-on:click="documentOpt(7)" type="button" class="pure-button">粗体</button>
+                            <button v-on:click="documentOpt(8)" type="button" class="pure-button">斜体</button>
+                        </div>
+                        <div class="cbtn-list">
+                            <button type="button" class="pure-button">插入资源</button>
+                            <button v-on:click="insertTableMode=true" type="button" class="pure-button">插入表格</button>
+                        </div>
+                        <div class="cbtn-list">
+                            <a v-on:click="setColor('666666')" href="javascript:;" class="btn-color" style="background-color:#666666;box-shadow:0 0 3px #666666;"></a>
+                            <a v-on:click="setColor('FF6666')" href="javascript:;" class="btn-color" style="background-color:#FF6666;box-shadow:0 0 3px #FF6666;"></a>
+                            <a v-on:click="setColor('0099CC')" href="javascript:;" class="btn-color" style="background-color:#0099CC;box-shadow:0 0 3px #0099CC;"></a>
+                            <a v-on:click="setColor('FFCC00')" href="javascript:;" class="btn-color" style="background-color:#FFCC00;box-shadow:0 0 3px #FFCC00;"></a>
+                            <a v-on:click="setColor('669933')" href="javascript:;" class="btn-color" style="background-color:#669933;box-shadow:0 0 3px #669933;"></a>
+                            <a v-on:click="setColor('996600')" href="javascript:;" class="btn-color" style="background-color:#996600;box-shadow:0 0 3px #996600;"></a>
+                            <a v-on:click="setColor('993399')" href="javascript:;" class="btn-color" style="background-color:#993399;box-shadow:0 0 3px #993399;"></a>
+                        </div>
+                    </span>
                 </div>
                 <div class="pure-u-3-4">
-                    <div id="note_editor"></div>
+                    <div id="noteEditor" v-bind:contenteditable="editable"></div>
                 </div>
             </div>
         </div>
+        <transition name="fade">
+            <div class="modal" v-show="insertTableMode">
+                <div class="modal-wrap" style="width:600px;">
+                    <div class="modal-title">插入表格</div>
+                    <div class="modal-content">
+                        <div class="pure-g">
+                            <div class="pure-u-1-3">
+                                <div class="input-wrap">
+                                    <legend class="legends">表格行数</legend>
+                                    <input type="text" class="input" v-model="tableData.rows" />
+                                </div>
+                            </div>
+                            <div class="pure-u-1-3">
+                                <div class="input-wrap">
+                                    <legend class="legends">表格列数</legend>
+                                    <input type="text" class="input" v-model="tableData.cols" />
+                                </div>
+                            </div>
+                            <div class="pure-u-1-3">
+                                <div class="input-wrap">
+                                    <legend class="legends">是否包含表头</legend>
+                                    <input type="checkbox" style="width:100%;margin-top:20px;" v-model="tableData.head" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button v-on:click="closeModal" type="button" class="pure-button">关闭</button>
+                        <button v-on:click="insertTable" type="button" class="pure-button btn-green">插入表格</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </body>
 <script>
     const vue = new Vue({
         el: '#app',
         data: {
-            id: '[[${cid}]]'
+            id: '[[${cid}]]',
+            editable: false,
+            codeMode: false,
+            insertTableMode: false,
+            tableData: {
+                head: true,
+                rows: 3,
+                cols: 4
+            },
+            noteEditor: null
+        },
+        methods: {
+            init: function(){
+                this.noteEditor = document.getElementById('noteEditor');
+                httpRequest('/content/get.do/id/' + vue.id, null, function(res){
+                    if (res.code == 1) {
+                        vue.editable = true;
+                        vue.noteEditor.innerHTML = res.result.detail;
+                    } else {
+                        vue.noteEditor.innerHTML = res.error;
+                    }
+                }, 'json');
+            },
+            closeModal: function(){
+                this.insertTableMode = false;
+            },
+            codeView: function() {
+                this.codeMode = !this.codeMode;
+                if (this.codeMode) {
+                    this.editable = false;
+                    let content = this.noteEditor.innerHTML;
+                    this.noteEditor.innerHTML = '<textarea rows="22">'
+                        + content.replace(/\<div\>\<br\>\<\/div\>/g, '<br>')
+                        + '</textarea>';
+                } else {
+                    this.noteEditor.innerHTML = document.getElementsByTagName('textarea')[0].value;
+                    this.editable = true;
+                }
+            },
+            documentOpt: function(index) {
+                switch (index) {
+                    case 1:
+                        document.execCommand('insertHTML', false, '<div class="content-title-xl">大号内容标题</div><br>');
+                        break;
+                    case 2:
+                        document.execCommand('insertHTML', false, '<div class="content-title-md">中号内容标题</div><br>');
+                        break;
+                    case 3:
+                        document.execCommand('insertHTML', false, '<div class="content-title-sm">小号内容标题</div><br>');
+                        break;
+                    case 4:
+                        document.execCommand('justifyLeft');
+                        break;
+                    case 5:
+                        document.execCommand('justifyCenter');
+                        break;
+                    case 6:
+                        document.execCommand('justifyRight');
+                        break;
+                    case 7:
+                        document.execCommand('bold');
+                        break;
+                    case 8:
+                        document.execCommand('italic');
+                        break;
+                }
+            },
+            setColor: function(color){
+                document.execCommand('foreColor', false, '#'+color);
+            },
+            insertTable: function(){
+                let pattern = /^\d+$/;
+                let rows = this.tableData.rows;
+                let cols = this.tableData.cols;
+                if (!pattern.test(rows) || rows < 0) {
+                    alert('行数必须填写正整数');
+                    return;
+                }
+                if (!pattern.test(cols) || cols < 0) {
+                    alert('列数必须填写正整数');
+                    return;
+                }
+                let html = '';
+                let ths = '';
+                let tds = '';
+                while (cols) {
+                    ths += '<th></th>';
+                    tds += '<td></td>';
+                    cols--;
+                }
+                if (this.tableData.head) {
+                    html += '<thead><tr>' + ths + '</tr></thead>';
+                }
+                html += '<tbody';
+                while (rows) {
+                    html += '<tr>' + tds + '</tr>';
+                    rows--;
+                }
+                document.execCommand('insertHTML', false, '<table class="content-table">' + html + '</tbody></table><br>');
+                this.insertTableMode = false;
+            },
+            writeContent: function(){
+                let content;
+                if (this.codeMode) {
+                    content = document.getElementsByTagName('textarea')[0].value;
+                } else {
+                    content = this.noteEditor.innerHTML;
+                }
+                httpRequest(
+                    '/content/saveDetail.do',
+                    {id: vue.id, detail: content},
+                    function(res){},
+                    'json'
+                )
+            }
         }
     });
+    vue.init();
 </script>
 </html>

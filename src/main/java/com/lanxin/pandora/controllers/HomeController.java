@@ -24,4 +24,9 @@ public class HomeController {
         data.put("cid", id);
         return "home/content";
     }
+
+    @RequestMapping(value = "/resource")
+    public String resource() {
+        return "home/resource";
+    }
 }
