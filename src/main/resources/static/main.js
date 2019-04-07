@@ -12,8 +12,9 @@
  * @param formData      post表单数据（若该字段存在，则表示为post请求方法）
  * @param callback      响应结果回调
  * @param resultType    响应结果格式 text（默认） | json
+ * @param multipart     是否使用formdata格式上传
  */
-const httpRequest = function(url, formData, callback, resultType) {
+const httpRequest = function(url, formData, callback, resultType, multipart) {
     let xmlHttp = new XMLHttpRequest();
     let params = '';
     let method = 'GET';
@@ -31,13 +32,19 @@ const httpRequest = function(url, formData, callback, resultType) {
     };
     xmlHttp.open(method, url, true);
     if (method == 'POST') {
-        xmlHttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-        for (let key in formData) {
-            params += '&' + key + '=' + formData[key];
+        if (multipart) {
+            xmlHttp.send(formData);
+        } else {
+            xmlHttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+            for (let key in formData) {
+                params += '&' + key + '=' + formData[key];
+            }
+            if (params != '') {
+                xmlHttp.send(params.substring(1));
+            } else {
+                xmlHttp.send();
+            }
         }
-    }
-    if (params != '') {
-        xmlHttp.send(params.substring(1));
     } else {
         xmlHttp.send();
     }

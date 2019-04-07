@@ -39,7 +39,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     public List<ResourceBean> getList(int offset, int limit, String bid) {
         Criteria criteria = new Criteria();
-        criteria.add("bid", bid);
+        if (! bid.equals("")) {
+            criteria.add("bid", bid);
+        }
         criteria.setOffset(offset);
         criteria.setLimit(limit);
         criteria.setOrder("sort desc");

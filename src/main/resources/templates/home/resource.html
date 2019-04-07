@@ -10,7 +10,7 @@
     <script type="text/javascript" th:src="@{/main.js}"></script>
     <script type="text/javascript" th:src="@{/vue-min.js}"></script>
     <style>
-        #fileInput {
+        .file-input {
             position: absolute;
             filter: alpha(opacity=0);
             opacity:0;
@@ -33,13 +33,9 @@
     <div id="app">
         <span th:include="home/_nav"></span>
         <div class="container">
-            <form class="pure-form" action="/resource/upload.do" enctype="multipart/form-data" method="post">
-                <input type="file" name="file" class="pure-input" />
-                <button class="pure-button" type="submit">上传</button>
-            </form>
             <div class="pure-g">
-                <div class="pure-u-1-2" id="uploadFile">
-                    <input id="fileInput" type="file" name="file_name">
+                <div class="pure-u-1-2">
+                    <input v-on:change="uploadFile" class="file-input" type="file">
                     <button type="button" class="pure-button btn-blue">上传资源文件</button>
                 </div>
                 <div class="pure-u-1-4">
@@ -101,6 +97,21 @@
         methods: {
             init: function(){
                 this.loadResourceList();
+            },
+            uploadFile: function(event){
+                let formData = new FormData();
+                formData.append('file', event.target.files[0]);
+                formData.append('bid', vue.bid);
+                httpRequest(
+                    '/resource/upload.do',
+                    formData,
+                    function(res){
+                        if (res.code == 1) {
+                            vue.loadResourceList();
+                        }
+                    },
+                    'json', true
+                );
             },
             loadResourceList: function(){
                 httpRequest(
