@@ -19,8 +19,8 @@ body {
 }
 
 .container {
-	margin-top: 50px;
-	padding: 20px 50px;
+	margin: 70px auto;
+	max-width: 1170px;
 }
 
 .content-title-xl {
@@ -101,13 +101,14 @@ body {
 }
 
 .nav {
-	height: 50px;
+	height: 49px;
 	background-color: #eee;
 	border-bottom: 1px solid #ddd;
 	
 }
 .nav-warp {
-	padding: 0 50px;
+	margin: 0 auto;
+	max-width: 1170px;
 }
 .nav-fixed-top {
 	position: fixed;
@@ -116,11 +117,10 @@ body {
 }
 .nav-title {
 	font-size: 18px;
-	padding: 10px 20px 0 0;
 	color: #666;
 }
-.nav-title,.nav-menu {
-	float: left;
+.nav-title {
+	padding-right: 20px;
 }
 .nav-menu {
 	padding: 0;
@@ -128,7 +128,7 @@ body {
 }
 .nav-menu li {
 	margin: 0;
-	float: left;
+	display: inline-block;
 	list-style: none;
 }
 .nav-menu li a {

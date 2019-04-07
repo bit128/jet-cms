@@ -11,10 +11,9 @@
     <script type="text/javascript" th:src="@{/vue-min.js}"></script>
     <style>
         body {
-        background-color: #eeeeee;
+            background-color: #eee;
         }
         #noteEditor {
-            margin-top: 10px;
             font-size:16px;
             color:#666;
             min-height: 460px;
@@ -26,10 +25,15 @@
         }
         #noteEditor textarea {
             border: 1px solid #eee;
-        }   
+        }
+        .edit-menu {
+            background-color: #f6f6f6;
+            padding-top: 20px;
+            height: 460px;
+        }
         .cbtn-list {
+            margin-top: 10px;
             text-align: center;
-            margin-top: 20px;
         }
         .btn-color {
             width: 20px;
@@ -37,6 +41,7 @@
             border-radius: 50%;
             display: inline-block;
             opacity: 0.9;
+            margin-top: 10px;
             margin-right: 5px;
         }
         .btn-color:hover {
@@ -65,39 +70,41 @@
         <div class="container">
             <div class="pure-g">
                 <div class="pure-u-1-4">
-                    <div class="cbtn-list">
-                        <button v-on:click="codeView()" type="button" class="pure-button" v-bind:class="{'btn-blue': codeMode}">代码模式</button>
-                        <button v-on:click="writeContent()" type="button" class="pure-button btn-xl">保存</button>
+                    <div class="edit-menu">
+                        <div class="cbtn-list">
+                            <button v-on:click="codeView()" type="button" class="pure-button" v-bind:class="{'btn-blue': codeMode}">代码模式</button>
+                            <button v-on:click="writeContent()" type="button" class="pure-button btn-xl">保存</button>
+                        </div>
+                        <span v-if="!codeMode">
+                            <div class="cbtn-list">
+                                <button v-on:click="documentOpt(1)" type="button" class="pure-button">大标题</button>
+                                <button v-on:click="documentOpt(2)" type="button" class="pure-button">中标题</button>
+                                <button v-on:click="documentOpt(3)" type="button" class="pure-button">小标题</button>
+                            </div>
+                            <div class="cbtn-list">
+                                <button v-on:click="documentOpt(4)" type="button" class="pure-button">左对齐</button>
+                                <button v-on:click="documentOpt(5)" type="button" class="pure-button">居中</button>
+                                <button v-on:click="documentOpt(6)" type="button" class="pure-button">右对齐</button>
+                            </div>
+                            <div class="cbtn-list">
+                                <button v-on:click="documentOpt(7)" type="button" class="pure-button">粗体</button>
+                                <button v-on:click="documentOpt(8)" type="button" class="pure-button">斜体</button>
+                            </div>
+                            <div class="cbtn-list">
+                                <button type="button" class="pure-button">插入资源</button>
+                                <button v-on:click="insertTableMode=true" type="button" class="pure-button">插入表格</button>
+                            </div>
+                            <div class="cbtn-list">
+                                <a v-on:click="setColor('666666')" href="javascript:;" class="btn-color" style="background-color:#666666;box-shadow:0 0 3px #666666;"></a>
+                                <a v-on:click="setColor('FF6666')" href="javascript:;" class="btn-color" style="background-color:#FF6666;box-shadow:0 0 3px #FF6666;"></a>
+                                <a v-on:click="setColor('0099CC')" href="javascript:;" class="btn-color" style="background-color:#0099CC;box-shadow:0 0 3px #0099CC;"></a>
+                                <a v-on:click="setColor('FFCC00')" href="javascript:;" class="btn-color" style="background-color:#FFCC00;box-shadow:0 0 3px #FFCC00;"></a>
+                                <a v-on:click="setColor('669933')" href="javascript:;" class="btn-color" style="background-color:#669933;box-shadow:0 0 3px #669933;"></a>
+                                <a v-on:click="setColor('996600')" href="javascript:;" class="btn-color" style="background-color:#996600;box-shadow:0 0 3px #996600;"></a>
+                                <a v-on:click="setColor('993399')" href="javascript:;" class="btn-color" style="background-color:#993399;box-shadow:0 0 3px #993399;"></a>
+                            </div>
+                        </span>
                     </div>
-                    <span v-if="!codeMode">
-                        <div class="cbtn-list">
-                            <button v-on:click="documentOpt(1)" type="button" class="pure-button">大标题</button>
-                            <button v-on:click="documentOpt(2)" type="button" class="pure-button">中标题</button>
-                            <button v-on:click="documentOpt(3)" type="button" class="pure-button">小标题</button>
-                        </div>
-                        <div class="cbtn-list">
-                            <button v-on:click="documentOpt(4)" type="button" class="pure-button">左对齐</button>
-                            <button v-on:click="documentOpt(5)" type="button" class="pure-button">居中</button>
-                            <button v-on:click="documentOpt(6)" type="button" class="pure-button">右对齐</button>
-                        </div>
-                        <div class="cbtn-list">
-                            <button v-on:click="documentOpt(7)" type="button" class="pure-button">粗体</button>
-                            <button v-on:click="documentOpt(8)" type="button" class="pure-button">斜体</button>
-                        </div>
-                        <div class="cbtn-list">
-                            <button type="button" class="pure-button">插入资源</button>
-                            <button v-on:click="insertTableMode=true" type="button" class="pure-button">插入表格</button>
-                        </div>
-                        <div class="cbtn-list">
-                            <a v-on:click="setColor('666666')" href="javascript:;" class="btn-color" style="background-color:#666666;box-shadow:0 0 3px #666666;"></a>
-                            <a v-on:click="setColor('FF6666')" href="javascript:;" class="btn-color" style="background-color:#FF6666;box-shadow:0 0 3px #FF6666;"></a>
-                            <a v-on:click="setColor('0099CC')" href="javascript:;" class="btn-color" style="background-color:#0099CC;box-shadow:0 0 3px #0099CC;"></a>
-                            <a v-on:click="setColor('FFCC00')" href="javascript:;" class="btn-color" style="background-color:#FFCC00;box-shadow:0 0 3px #FFCC00;"></a>
-                            <a v-on:click="setColor('669933')" href="javascript:;" class="btn-color" style="background-color:#669933;box-shadow:0 0 3px #669933;"></a>
-                            <a v-on:click="setColor('996600')" href="javascript:;" class="btn-color" style="background-color:#996600;box-shadow:0 0 3px #996600;"></a>
-                            <a v-on:click="setColor('993399')" href="javascript:;" class="btn-color" style="background-color:#993399;box-shadow:0 0 3px #993399;"></a>
-                        </div>
-                    </span>
                 </div>
                 <div class="pure-u-3-4">
                     <div id="noteEditor" v-bind:contenteditable="editable"></div>
