@@ -12,7 +12,8 @@ public class ResourceBean implements Serializable {
     private String path = "";
     private String name = "";
     private long size = 0;
-    private int time = 0;
+    private int sort = 0;
+    private long time = 0;
 
 
     public String getId() {
@@ -63,11 +64,19 @@ public class ResourceBean implements Serializable {
         this.size = size;
     }
 
-    public int getTime() {
+    public int getSort() {
+        return this.sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public long getTime() {
         return this.time;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

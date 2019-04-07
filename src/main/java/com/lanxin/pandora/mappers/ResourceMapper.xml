@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lanxin.pandora.mappers.ResourceMapper">
+    <select id="findNewSort" parameterType="string" resultType="Map">
+        select sort from resource where bid=#{bid} order by sort desc limit 1
+    </select>
     <insert id="insert" parameterType="com.lanxin.pandora.beans.ResourceBean">
-        insert into resource (id,fid,bid,type,path,name,size,time) 
-        values (#{id},#{fid},#{bid},#{type},#{path},#{name},#{size},#{time})
+        insert into resource (id,bid,type,path,name,size,sort,time) 
+        values (#{id},#{bid},#{type},#{path},#{name},#{size},#{sort},#{time})
     </insert>
+    <select id="queryList" parameterType="com.lanxin.pandora.tools.Criteria" resultType="com.lanxin.pandora.beans.ResourceBean">
+        select ${select} from resource
+        <if test="condition!=''">where ${condition}</if>
+        <if test="order!=''">order by ${order}</if>
+        limit ${offset}, ${limit}
+    </select>
 </mapper>
