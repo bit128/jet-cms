@@ -73,7 +73,8 @@
                     <div class="edit-menu">
                         <div class="cbtn-list">
                             <button v-on:click="codeView()" type="button" class="pure-button" v-bind:class="{'btn-blue': codeMode}">代码模式</button>
-                            <button v-on:click="writeContent()" type="button" class="pure-button btn-xl">保存</button>
+                            <button v-on:click="writeContent()" type="button" class="pure-button btn-orange" v-if="timerCount>0">保存 {{timerCount}} <small>s</small></button>
+                            <button v-on:click="writeContent()" type="button" class="pure-button" v-else>保存</button>
                         </div>
                         <span v-if="!codeMode">
                             <div class="cbtn-list">
@@ -147,6 +148,7 @@
     </div>
 </body>
 <script>
+    const TIME_LIMIT = 30;
     const vue = new Vue({
         el: '#app',
         data: {
@@ -159,11 +161,16 @@
                 rows: 3,
                 cols: 4
             },
-            noteEditor: null
+            noteEditor: null,
+            timerCount: 0,
+            timer: null
         },
         methods: {
-            init: function(){
+            init: function() {
                 this.noteEditor = document.getElementById('noteEditor');
+                this.noteEditor.onkeyup = function() {
+                    vue.writeReady();
+                };
                 httpRequest('/content/get.do/id/' + vue.id, null, function(res){
                     if (res.code == 1) {
                         vue.editable = true;
@@ -173,7 +180,7 @@
                     }
                 }, 'json');
             },
-            closeModal: function(){
+            closeModal: function() {
                 this.insertTableMode = false;
             },
             codeView: function() {
@@ -216,11 +223,12 @@
                         document.execCommand('italic');
                         break;
                 }
+                this.writeReady();
             },
-            setColor: function(color){
+            setColor: function(color) {
                 document.execCommand('foreColor', false, '#'+color);
             },
-            insertTable: function(){
+            insertTable: function() {
                 let pattern = /^\d+$/;
                 let rows = this.tableData.rows;
                 let cols = this.tableData.cols;
@@ -251,7 +259,7 @@
                 document.execCommand('insertHTML', false, '<table class="content-table">' + html + '</tbody></table><br>');
                 this.insertTableMode = false;
             },
-            writeContent: function(){
+            writeContent: function() {
                 let content;
                 if (this.codeMode) {
                     content = document.getElementsByTagName('textarea')[0].value;
@@ -261,10 +269,27 @@
                 httpRequest(
                     '/content/saveDetail.do',
                     {id: vue.id, detail: content},
-                    function(res){},
+                    function(res) {},
                     'json'
-                )
-            }
+                );
+                vue.timerCount = 0;
+                if (vue.timer != null) {
+                    clearInterval(vue.timer);
+                    vue.timer = null;
+                }
+            },
+            writeReady: function() {
+                if (this.timerCount == 0) {
+                    this.timerCount = TIME_LIMIT;
+                }
+                if (this.timer == null) {
+                    this.timer = setInterval(() => {
+                        if (--vue.timerCount == 0) {
+                            vue.writeContent();
+                        }
+                    }, 1000);
+                }
+            },
         }
     });
     vue.init();
