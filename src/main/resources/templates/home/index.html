@@ -31,13 +31,9 @@
         }
         .menu-name {
             font-size: 16px;
-            color: #0095cf;
+            color: #666;
             padding: 6px 0 4px;
             font-weight: bold;
-        }
-        .menu-role {
-            font-size: 12px;
-            color: #666;
         }
     </style>
 </head>
@@ -53,23 +49,38 @@
                 <div class="pure-g">
                     <div class="pure-u-1-6">
                         <a th:href="@{/home/channel}">
-                            <img th:src="@{/images/png-0814.png}" />
+                            <img th:src="@{/images/png-0770.png}" />
                             <div class="menu-name">栏目内容</div>
-                            <div class="menu-role">[权限：内容]</div>
                         </a>
                     </div>
                     <div class="pure-u-1-6">
                         <a href="/home/resource">
                             <img th:src="@{/images/png-0841.png}" />
                             <div class="menu-name">资源</div>
-                            <div class="menu-role">[权限：资源]</div>
                         </a>
                     </div>
                     <div class="pure-u-1-6">
                         <a href="">
                             <img th:src="@{/images/png-0017.png}" />
                             <div class="menu-name">关键词</div>
-                            <div class="menu-role">[权限：内容]</div>
+                        </a>
+                    </div>
+                    <div class="pure-u-1-6">
+                        <a href="">
+                            <img th:src="@{/images/png-0845.png}" />
+                            <div class="menu-name">用户</div>
+                        </a>
+                    </div>
+                    <div class="pure-u-1-6">
+                        <a href="">
+                            <img th:src="@{/images/png-0814.png}" />
+                            <div class="menu-name">日志</div>
+                        </a>
+                    </div>
+                    <div class="pure-u-1-6">
+                        <a href="">
+                            <img th:src="@{/images/png-0011.png}" />
+                            <div class="menu-name">配置</div>
                         </a>
                     </div>
                 </div>
