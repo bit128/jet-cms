@@ -44,7 +44,7 @@
             <div class="pure-g">
                 <div class="pure-u-1-2">
                     <input v-on:change="uploadFile" class="file-input" type="file">
-                    <button type="button" class="pure-button btn-blue">上传资源文件</button>
+                    <button type="button" class="pure-button btn-blue">上传文件</button>
                 </div>
                 <div class="pure-u-1-4">
                     文件总数：<b>{{allCount}}</b> 个
@@ -72,38 +72,52 @@
                     <tr v-for="item in resourceList">
                         <td><input type="text" v-bind:value="item.name" v-on:change="setValue(item.id, 'name', $event)"/></td>
                         <td>{{item.type}}</td>
-                        <td><a v-bind:href="'/resource/image/'+item.path" target="_blank">{{item.path}}</a></td>
+                        <td><a v-bind:href="'/resource/output/'+item.path" target="_blank">{{item.path}}</a></td>
                         <td>{{(item.size/1024).toFixed(2)+' kb'}}</td>
                         <td>{{dateFormat('y-m-d h:i', item.time*1000)}}</td>
                         <td><input type="text" v-bind:value="item.sort" v-on:change="setValue(item.id, 'sort', $event)"/></td>
                         <td>
                             <div class="pure-g">
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm pure-u-1">设为封面</button></div>
+                                    <div class="c-btns-item">
+                                        <button v-if="bid!=''&&isImage(item.type)" v-on:click="setCover(item.path)" type="button" class="pure-button btn-sm pure-u-1">设为封面</button>
+                                    </div>
                                 </div>
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm btn-orange pure-u-1">删除</button></div>
+                                    <div class="c-btns-item">
+                                        <button v-on:click="deleteResource(item.id)" type="button" class="pure-button btn-sm btn-orange pure-u-1">删除</button>
+                                    </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <pagination ref="pageView"></pagination>
         </div>
     </div>
 </body>
 <script>
-    const LIMIT = 10;
+    const LIMIT = 5;
     const vue = new Vue({
         el: '#app',
         data: {
             offset: 0,
             bid: '[[${bid}]]',
+            entry: '[[${entry}]]',
             resourceList: [],
             allCount: 0
         },
+        components: {
+            pagination: Pagination
+        },
         methods: {
             init: function(){
+                this.$refs['pageView'].init(LIMIT, 5);
+                this.$refs['pageView'].setCallback(function(page){
+                    vue.offset = (page - 1) * LIMIT;
+                    vue.loadResourceList();
+                });
                 this.loadResourceList();
             },
             uploadFile: function(event){
@@ -131,10 +145,33 @@
                 }
                 httpRequest(
                     '/resource/setAttribute.do',
-                    {id: id, field: field, value: val}
+                    {id: id, field: field, value: val},
+                    function(res) {
+                        vue.loadResourceList();
+                    }
                 )
             },
+            setCover: function(path) {
+                if (confirm('确定要将该图片设置为封面吗？')) {
+                    httpRequest(
+                        '/' + vue.entry + '/setCover.do',
+                        {id: vue.bid, path: path},
+                        function(res) {}
+                    );
+                }
+            },
             loadResourceList: function(){
+                httpRequest(
+                    '/resource/getCount.do',
+                    {bid: vue.bid},
+                    function(res) {
+                        if (res.code == 1) {
+                            vue.allCount = res.result;
+                            vue.$refs['pageView'].setData(res.result);
+                        }
+                    },
+                    'json'
+                );
                 httpRequest(
                     '/resource/getList.do',
                     {offset: vue.offset, limit: LIMIT, bid: vue.bid},
@@ -145,6 +182,17 @@
                     },
                     'json'
                 );
+            },
+            deleteResource: function(id) {
+                if (confirm('确定要删除吗？这会导致之前的引用失效！')) {
+                    httpRequest(
+                        '/resource/delete.do',
+                        {id: id},
+                        function(res) {
+                            vue.loadResourceList();
+                        }
+                    );
+                }
             }
         }
     });

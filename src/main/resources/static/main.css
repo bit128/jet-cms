@@ -178,6 +178,9 @@ body {
 	text-align: left;
 	border: 1px solid #ddd;
 }
+.table td img {
+	border-radius: 4px;
+}
 
 .breadcrumb {
 	font-size: 12px;
@@ -196,11 +199,11 @@ body {
 	color: #ccc;
 }
 .breadcrumb ul li a {
-	color: #666;
+	color: #fa6800;
 	text-decoration: none;
 }
 .breadcrumb ul li a:hover {
-	color: #0095cf;
+	color: #fa5500;
 }
 
 .pagination {

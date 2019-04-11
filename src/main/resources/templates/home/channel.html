@@ -125,7 +125,12 @@
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in contentList">
-                        <td><img class="c-img" th:src="@{/images/default.jpg}" /></td>
+                        <td>
+                            <a v-bind:href="'/home/resource?bid='+item.id+'&entry=content'" target="_blank">
+                                <img v-if="item.cover!=''" class="c-img" v-bind:src="'/resource/output/'+item.cover" />
+                                <img v-else class="c-img" src="/images/default.jpg" />
+                            </a>
+                        </td>
                         <td>
                             <div class="c-id">编号：<b>{{item.id}}</b></div>
                             <div class="c-title"><a href="javascript:;" v-on:click="changeFid(item.id)">{{item.title}}</a></div>
@@ -146,7 +151,7 @@
                         <td class="c-btns">
                             <div class="pure-g">
                                 <div class="pure-u-1-2">
-                                    <div class="c-btns-item"><button type="button" class="pure-button btn-sm">资源</button></div>
+                                    <div class="c-btns-item"><a v-bind:href="'/home/resource?bid='+item.id+'&entry=content'" class="pure-button btn-sm" target="_blank">资源</a></div>
                                 </div>
                                 <div class="pure-u-1-2">
                                     <div class="c-btns-item"><button v-on:click="deleteContent(item.id)" type="button" class="pure-button btn-sm btn-orange">删除</button></div>
@@ -243,7 +248,6 @@
                     vue.offset = (page - 1) * LIMIT;
                     vue.loadContentList();
                 });
-                this.loadContentList();
             },
             newContent: function(){
                 httpRequest(
@@ -366,6 +370,8 @@
                         function(res){
                             if (res.code == 1) {
                                 vue.loadContentList();
+                            } else {
+                                alert(res.error);
                             }
                         },
                         'json'
@@ -375,5 +381,8 @@
         }
     });
     vue.init();
+    document.onfocus = function(){
+        vue.loadContentList();
+    };
 </script>
 </html>

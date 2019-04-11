@@ -89,7 +89,7 @@ const dateFormat = function(format, time){
 /**
  * Vue组件 分页视图
  */
-var Pagination = {
+const Pagination = {
     data: function(){
         return {
             current: 1,
@@ -175,3 +175,13 @@ var Pagination = {
         + '<li v-on:click="onPage(item)" v-bind:class="{active: current==item}" v-for="item in pages"><a href="javascript:;">{{item}}</a></li>'
         + '<li v-on:click="onPage(allPage)"><a href="javascript:;">&gt;</a></li></ul></div>'
 };
+/**
+ * 判断是否是图片格式
+ * @param {*} extName 
+ */
+const isImage = function(extName) {
+    if (['jpg','jpeg','png'].indexOf(extName) != -1) {
+        return true;
+    }
+    return false;
+}

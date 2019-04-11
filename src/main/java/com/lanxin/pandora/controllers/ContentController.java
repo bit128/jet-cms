@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lanxin.pandora.beans.ContentBean;
 import com.lanxin.pandora.service.ContentService;
+import com.lanxin.pandora.service.ResourceService;
 import com.lanxin.pandora.tools.JsonResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/content")
-public class ContentController {
+public class ContentController implements ResourceService.ImageOpt {
 
     @Autowired
     private ContentService contentService;
+
+    @Override
+    public void setCover(HttpServletResponse response, String id, String path) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("cover", path);
+        contentService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
+    }
 
     /**
      * 新建内容
@@ -50,7 +60,7 @@ public class ContentController {
      * @param fid
      */
     @RequestMapping(value = "/getCount.do", method = RequestMethod.POST)
-    public void getItemCount(HttpServletResponse response, String fid) {
+    public void getCount(HttpServletResponse response, String fid) {
         new JsonResponse(response).write(JsonResponse.RES_OK, contentService.count(fid)+"", null);
     }
 
@@ -136,7 +146,12 @@ public class ContentController {
      */
     @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     public void delete(HttpServletResponse response, String id) {
-        contentService.delete(id);
-        new JsonResponse(response).write(JsonResponse.RES_OK);
+        if (contentService.count(id) == 0) {
+            contentService.delete(id);
+            new JsonResponse(response).write(JsonResponse.RES_OK);
+        } else {
+            new JsonResponse(response).write(JsonResponse.RES_FAIL, null, "安全起见，需要先删除子栏目");
+        }
+        
     }
 }

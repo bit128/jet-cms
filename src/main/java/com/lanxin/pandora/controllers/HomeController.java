@@ -1,5 +1,7 @@
 package com.lanxin.pandora.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +49,9 @@ public class HomeController {
      * @return
      */
     @RequestMapping(value = "/resource")
-    public String resource(@RequestParam(value = "bid", required = false) String bid, ModelMap data) {
-        data.put("bid", bid);
+    public String resource(HttpServletRequest request, ModelMap data) {
+        data.put("bid", request.getParameter("bid"));
+        data.put("entry", request.getParameter("entry"));
         return "home/resource";
     }
 }

@@ -6,11 +6,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lanxin.pandora.beans.ResourceBean;
 import com.lanxin.pandora.service.ResourceService;
 import com.lanxin.pandora.tools.DateTools;
 import com.lanxin.pandora.tools.JsonResponse;
@@ -74,15 +77,15 @@ public class ResourceController {
     }
 
     /**
-     * 渲染图片
+     * 输出文件
      * @param request
      * @param response
      */
-    @RequestMapping("/image/**")
+    @RequestMapping("/output/**")
     public void image(HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
         if (uri.length() > 16) {
-            String path = uri.substring(16);
+            String path = uri.substring(17);
             String extName = path.substring(path.lastIndexOf(".") + 1);
             File file = new File(uploadPath + path);
             if (file.exists()) {
@@ -91,27 +94,34 @@ public class ResourceController {
                 } else if (extName.equals("png")) {
                     response.setContentType("image/png");
                 } else {
+                    String fileName = path.substring(path.lastIndexOf("/") + 1);
+                    response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);
                     response.setContentType("application/octet-stream");
                 }
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[2048];
                 FileInputStream fileInputStream;
                 BufferedInputStream bufferedInputStream;
                 try {
                     fileInputStream = new FileInputStream(file);
                     bufferedInputStream = new BufferedInputStream(fileInputStream);
                     OutputStream outputStream = response.getOutputStream();
-                    int i = bufferedInputStream.read(buffer);
-                    while (i != -1) {
-                        outputStream.write(buffer);
-                        i = bufferedInputStream.read(buffer);
+                    int i = 0;
+                    while ((i = bufferedInputStream.read(buffer)) > 0) {
+                        outputStream.write(buffer, 0, i);
                     }
-                    fileInputStream.close();
+                    outputStream.close();
                     bufferedInputStream.close();
+                    fileInputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    @RequestMapping(value = "/getCount.do", method = RequestMethod.POST)
+    public void getCount(HttpServletResponse response, String bid) {
+        new JsonResponse(response).write(JsonResponse.RES_OK, resourceService.count(bid)+"", null);
     }
 
     /**
@@ -124,5 +134,43 @@ public class ResourceController {
     @RequestMapping(value = "/getList.do", method = RequestMethod.POST)
     public void getList(HttpServletResponse response, String bid, int offset, int limit) {
         new JsonResponse(response).write(resourceService.getList(offset, limit, bid));
+    }
+
+    /**
+     * 设置资源属性
+     * @param response
+     * @param id
+     * @param field
+     * @param value
+     */
+    @RequestMapping(value = "/setAttribute.do", method = RequestMethod.POST)
+    public void setAttribute(HttpServletResponse response, String id, String field, String value) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put(field, value);
+        data.put("time", Calendar.getInstance().getTimeInMillis() / 1000);
+        resourceService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
+    }
+
+    /**
+     * 根据资源id删除资源
+     * @param response
+     * @param id
+     */
+    @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
+    public void delete(HttpServletResponse response, String id) {
+        ResourceBean resource = resourceService.get(id);
+        if (resource != null) {
+            //尝试删除源文件
+            File file = new File(uploadPath + resource.getPath());
+            if (file.exists()) {
+                file.delete();
+            }
+            resourceService.delete(id);
+            new JsonResponse(response).write(JsonResponse.RES_OK);
+        } else {
+            new JsonResponse(response).write(JsonResponse.RES_FAIL);
+        }
     }
 }

@@ -8,10 +8,31 @@
         insert into resource (id,bid,type,path,name,size,sort,time) 
         values (#{id},#{bid},#{type},#{path},#{name},#{size},#{sort},#{time})
     </insert>
+    <select id="count" parameterType="com.lanxin.pandora.tools.Criteria" resultType="int">
+        select count(*) from resource
+        <if test="condition!=''">where ${condition}</if>
+    </select>
+    <select id="query" parameterType="String" resultType="com.lanxin.pandora.beans.ResourceBean">
+        select * from resource where id=#{id}
+    </select>
     <select id="queryList" parameterType="com.lanxin.pandora.tools.Criteria" resultType="com.lanxin.pandora.beans.ResourceBean">
         select ${select} from resource
         <if test="condition!=''">where ${condition}</if>
         <if test="order!=''">order by ${order}</if>
         limit ${offset}, ${limit}
     </select>
+    <update id="updateInfo" parameterType="Map">
+        update resource set
+        <foreach collection="map" item="value" index="key" separator=",">
+            <if test="key!='id'">
+                ${key}=#{value}
+            </if>
+        </foreach>
+        <where>
+            id=#{map.id}
+        </where>
+    </update>
+    <delete id="delete" parameterType="String">
+        delete from resource where id=#{id}
+    </delete>
 </mapper>
