@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import com.lanxin.pandora.beans.ResourceBean;
 import com.lanxin.pandora.mappers.ResourceMapper;
 import com.lanxin.pandora.service.ResourceService;
