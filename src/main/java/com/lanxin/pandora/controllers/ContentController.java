@@ -60,8 +60,8 @@ public class ContentController implements ResourceService.ImageOpt {
      * @param fid
      */
     @RequestMapping(value = "/getCount.do", method = RequestMethod.POST)
-    public void getCount(HttpServletResponse response, String fid) {
-        new JsonResponse(response).write(JsonResponse.RES_OK, contentService.count(fid)+"", null);
+    public void getCount(HttpServletResponse response, String fid, String keyword) {
+        new JsonResponse(response).write(JsonResponse.RES_OK, contentService.count(fid, keyword)+"", null);
     }
 
     /**
@@ -87,8 +87,8 @@ public class ContentController implements ResourceService.ImageOpt {
      * @param limit
      */
     @RequestMapping(value = "/getSimpleList.do", method = RequestMethod.POST)
-    public void getList(HttpServletResponse response, String fid, int offset, int limit) {
-        new JsonResponse(response).write(contentService.getSimpleList(offset, limit, fid));
+    public void getList(HttpServletResponse response, int offset, int limit, String fid, String keyword) {
+        new JsonResponse(response).write(contentService.getSimpleList(offset, limit, fid, keyword));
     }
 
     /**
@@ -146,7 +146,7 @@ public class ContentController implements ResourceService.ImageOpt {
      */
     @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     public void delete(HttpServletResponse response, String id) {
-        if (contentService.count(id) == 0) {
+        if (contentService.count(id, null) == 0) {
             contentService.delete(id);
             new JsonResponse(response).write(JsonResponse.RES_OK);
         } else {

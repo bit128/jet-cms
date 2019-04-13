@@ -38,9 +38,12 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public int count(String fid) {
+    public int count(String fid, String keyword) {
         Criteria criteria = new Criteria();
         criteria.add("fid", fid);
+        if (!keyword.isEmpty()) {
+            criteria.add("title", "%"+keyword+"%", "like", "AND");
+        }
         return contentMapper.count(criteria);
     }
 
@@ -67,10 +70,13 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<ContentBean> getSimpleList(int offset, int limit, String fid) {
+    public List<ContentBean> getSimpleList(int offset, int limit, String fid, String keyword) {
         Criteria criteria = new Criteria();
         criteria.setSelect("id,fid,cover,title,keyword,data,sort,createTime,changeTime,status");
         criteria.add("fid", fid);
+        if (!keyword.isEmpty()) {
+            criteria.add("title", "%"+keyword+"%", "like", "AND");
+        }
         criteria.setOffset(offset);
         criteria.setLimit(limit);
         criteria.setOrder("sort desc");

@@ -50,10 +50,10 @@
                     文件总数：<b>{{allCount}}</b> 个
                 </div>
                 <div class="pure-u-1-4 text-right">
-                    <div class="pure-form">
-                        <input type="text" class="pure-input">
-                        <button type="button" class="pure-button">搜索</button>
-                    </div>
+                    <form class="pure-form" v-on:submit.prevent="search">
+                        <input type="text" class="pure-input" v-model="keyword">
+                        <button type="submit" class="pure-button">搜索</button>
+                    </form>
                 </div>
             </div>
             <table class="table">
@@ -98,13 +98,14 @@
     </div>
 </body>
 <script>
-    const LIMIT = 5;
+    const LIMIT = 10;
     const vue = new Vue({
         el: '#app',
         data: {
             offset: 0,
             bid: '[[${bid}]]',
             entry: '[[${entry}]]',
+            keyword: '',
             resourceList: [],
             allCount: 0
         },
@@ -119,6 +120,10 @@
                     vue.loadResourceList();
                 });
                 this.loadResourceList();
+            },
+            search: function() {
+                vue.offset = 0;
+                vue.loadResourceList();
             },
             uploadFile: function(event){
                 let formData = new FormData();
@@ -163,7 +168,7 @@
             loadResourceList: function(){
                 httpRequest(
                     '/resource/getCount.do',
-                    {bid: vue.bid},
+                    {bid: vue.bid, keyword: vue.keyword},
                     function(res) {
                         if (res.code == 1) {
                             vue.allCount = res.result;
@@ -174,7 +179,7 @@
                 );
                 httpRequest(
                     '/resource/getList.do',
-                    {offset: vue.offset, limit: LIMIT, bid: vue.bid},
+                    {offset: vue.offset, limit: LIMIT, bid: vue.bid, keyword: vue.keyword},
                     function(res) {
                         if (res.code == 1) {
                             vue.resourceList = res.result;

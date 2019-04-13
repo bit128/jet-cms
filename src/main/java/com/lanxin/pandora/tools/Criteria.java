@@ -33,7 +33,7 @@ public class Criteria {
 	 * @param operator 操作符
 	 */
 	public void add(String key, String value, String symbol, String operator) {
-		addCondition(key + symbol + "'" + addSlashes(value) +"'", operator);
+		addCondition(key + " " + symbol + " '" + addSlashes(value) +"'", operator);
 	}
 	
 	/**

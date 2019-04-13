@@ -101,15 +101,17 @@
                 <div class="pure-u-1-2">
                     <div class="breadcrumb">
                         <ul>
-                            <li v-for="item in breadcrumb" v-on:click="changeFid(item.split('^')[0])">/ <a href="javascript:;">{{item.split('^')[1]}}</a></li>
+                            <li v-for="item in breadcrumb" v-on:click="changeFid(item.split('^')[0])">
+                                / <a href="javascript:;">{{item.split('^')[1]}}</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="pure-u-1-4 text-right">
-                    <div class="pure-form">
-                        <input type="text" class="pure-input">
-                        <button type="button" class="pure-button">搜索</button>
-                    </div>
+                    <form class="pure-form" v-on:submit.prevent="search">
+                        <input type="text" class="pure-input" v-model="keyword">
+                        <button type="submit" class="pure-button">搜索</button>
+                    </form>
                 </div>
             </div>
             <table class="table">
@@ -226,6 +228,7 @@
         data: {
             offset: 0,
             fid: '',
+            keyword: '',
             breadcrumb: [],
             editMode: false,
             editData: {
@@ -248,6 +251,10 @@
                     vue.offset = (page - 1) * LIMIT;
                     vue.loadContentList();
                 });
+            },
+            search: function() {
+                vue.offset = 0;
+                vue.loadContentList();
             },
             newContent: function(){
                 httpRequest(
@@ -333,7 +340,7 @@
             loadContentList: function(){
                 httpRequest(
                     '/content/getCount.do',
-                    {fid: vue.fid},
+                    {fid: vue.fid, keyword: vue.keyword},
                     function(res) {
                         if (res.code == 1) {
                             vue.$refs['pageView'].setData(res.result);
@@ -343,7 +350,7 @@
                 );
                 httpRequest(
                     '/content/getSimpleList.do',
-                    {offset: vue.offset, limit: LIMIT, fid: vue.fid},
+                    {offset: vue.offset, limit: LIMIT, fid: vue.fid, keyword: vue.keyword},
                     function(res){
                         if (res.code == 1) {
                             vue.contentList = res.result;

@@ -39,10 +39,13 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public int count(String bid) {
+    public int count(String bid, String keyword) {
         Criteria criteria = new Criteria();
-        if (!bid.equals("")) {
+        if (!bid.isEmpty()) {
             criteria.add("bid", bid);
+        }
+        if (!keyword.isEmpty()) {
+            criteria.add("name", "%"+keyword+"%", "like", "AND");
         }
         return resourceMapper.count(criteria);
     }
@@ -53,10 +56,13 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<ResourceBean> getList(int offset, int limit, String bid) {
+    public List<ResourceBean> getList(int offset, int limit, String bid, String keyword) {
         Criteria criteria = new Criteria();
-        if (! bid.equals("")) {
+        if (!bid.isEmpty()) {
             criteria.add("bid", bid);
+        }
+        if (!keyword.isEmpty()) {
+            criteria.add("name", "%"+keyword+"%", "like", "AND");
         }
         criteria.setOffset(offset);
         criteria.setLimit(limit);

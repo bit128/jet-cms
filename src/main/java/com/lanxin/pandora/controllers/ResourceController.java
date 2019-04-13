@@ -18,6 +18,7 @@ import com.lanxin.pandora.service.ResourceService;
 import com.lanxin.pandora.tools.DateTools;
 import com.lanxin.pandora.tools.JsonResponse;
 
+import org.apache.ibatis.javassist.compiler.ast.Keyword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -120,8 +121,8 @@ public class ResourceController {
     }
 
     @RequestMapping(value = "/getCount.do", method = RequestMethod.POST)
-    public void getCount(HttpServletResponse response, String bid) {
-        new JsonResponse(response).write(JsonResponse.RES_OK, resourceService.count(bid)+"", null);
+    public void getCount(HttpServletResponse response, String bid, String keyword) {
+        new JsonResponse(response).write(JsonResponse.RES_OK, resourceService.count(bid, keyword)+"", null);
     }
 
     /**
@@ -132,8 +133,8 @@ public class ResourceController {
      * @param limit
      */
     @RequestMapping(value = "/getList.do", method = RequestMethod.POST)
-    public void getList(HttpServletResponse response, String bid, int offset, int limit) {
-        new JsonResponse(response).write(resourceService.getList(offset, limit, bid));
+    public void getList(HttpServletResponse response, int offset, int limit, String bid, String keyword) {
+        new JsonResponse(response).write(resourceService.getList(offset, limit, bid, keyword));
     }
 
     /**

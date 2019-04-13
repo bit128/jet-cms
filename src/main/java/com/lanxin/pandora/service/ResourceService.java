@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public interface ResourceService {
     public String insert(String bid, String type, String path, long size);
-    public int count(String bid);
+    public int count(String bid, String keyword);
     public ResourceBean get(String id);
-    public List<ResourceBean> getList(int offset, int limit, String bid);
+    public List<ResourceBean> getList(int offset, int limit, String bid, String keyword);
     public void updateInfo(Map<String, Object> data);
     public void delete(String id);
 

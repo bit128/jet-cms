@@ -53,4 +53,13 @@ public class HomeController {
         data.put("entry", request.getParameter("entry"));
         return "home/resource";
     }
+
+    /**
+     * 用户管理 - 页面
+     * @return
+     */
+    @RequestMapping(value = "/user")
+    public String user() {
+        return "home/user";
+    }
 }
