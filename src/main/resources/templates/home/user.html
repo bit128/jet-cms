@@ -10,6 +10,15 @@
     <script type="text/javascript" th:src="@{/main.js}"></script>
     <script type="text/javascript" th:src="@{/vue-min.js}"></script>
     <style>
+        .table {
+            font-size: 14px;
+        }
+        .u-img {
+            max-width: 100px;
+        }
+        .u-time {
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -36,15 +45,50 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="width:200px;">账号</th>
-                        <th>基本信息</th>
+                        <th>形象</th>
+                        <th style="width:210px;">账号</th>
+                        <th style="width:180px;">基本信息</th>
                         <th>扩展信息</th>
                         <th>权限</th>
-                        <th style="width:50px;">状态</th>
-                        <th style="width:150px;">操作</th>
+                        <th style="width:100px;">状态</th>
+                        <th style="width:80px;">操作</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>
+                            <img class="u-img" src="/images/default.jpg" />
+                        </td>
+                        <td>
+                            <big>hongerbo@qq.com</big><br>
+                            <small>13d86ca601b88e2a870eb130d527fad2</small>
+                        </td>
+                        <td>
+                            <big>秘法师</big> [ <b>男士</b> ]
+                        </td>
+                        <td>
+                            <div class="u-time">创建时间：2017-09-12 14:21</div>
+                            <div class="u-time">登录时间：2019-04-11 12:30</div>
+                            <div class="u-time">登录IP：120.27.221.70</div>
+                        </td>
+                        <td>
+                            <label><input type="checkbox" value="1"> 内容</label>
+                            <label><input type="checkbox" value="2"> 资源</label>
+                            <label><input type="checkbox" value="4"> 用户</label>
+                            <label><input type="checkbox" value="8"> 日志</label>
+                            <label><input type="checkbox" value="16"> 配置</label>
+                        </td>
+                        <td>
+                            <select>
+                                <option value="1">普通用户</option>
+                                <option value="2">会员</option>
+                                <option value="9">管理员</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="pure-button btn-sm btn-orange">删除</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <pagination ref="pageView"></pagination>

@@ -145,9 +145,10 @@
                         <td><div class="c-sort text-center">{{item.sort}}</div></td>
                         <td>
                             <select class="c-state" v-on:change="setStatus(item.id, $event)">
-                                <option value="0" v-bind:selected="item.status==0">状态0</option>
-                                <option value="1" v-bind:selected="item.status==1">状态1</option>
-                                <option value="2" v-bind:selected="item.status==2">状态2</option>
+                                <option value="0" v-bind:selected="item.status==0">隐藏</option>
+                                <option value="1" v-bind:selected="item.status==1">待发布</option>
+                                <option value="2" v-bind:selected="item.status==2">公开</option>
+                                <option value="3" v-bind:selected="item.status==3">置顶</option>
                             </select>
                         </td>
                         <td class="c-btns">

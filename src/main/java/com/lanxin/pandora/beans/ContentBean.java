@@ -6,10 +6,6 @@ public class ContentBean implements Serializable {
 
     public final static long serialVersionUID = 1L;
 
-    public final static int STATE_HIDE  = 0;
-    public final static int STATE_OPEN  = 1;
-    public final static int STATE_HOT   = 2;
-
     private String id;
     private String fid = "";
     private String cover = "";
@@ -20,7 +16,7 @@ public class ContentBean implements Serializable {
     private int sort = 0;
     private long createTime = 0;
     private long changeTime = 0;
-    private int status = STATE_HIDE;
+    private int status = 0;
 
     public String getId() {
         return this.id;

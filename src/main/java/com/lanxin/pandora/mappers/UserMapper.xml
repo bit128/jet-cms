@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanxin.pandora.mappers.UserMapper">
+    <insert id="insert" parameterType="com.lanxin.pandora.beans.UserBean">
+        insert into user (id,account,password,token,name,avatar,gender,role,count,ip,createTime,activeTime,status) 
+        values (#{id},#{account},#{password},#{token},#{name},#{avatar},#{gender},#{role},#{count},#{ip},#{createTime},#{activeTime},#{status})
+    </insert>
+    <select id="count" parameterType="com.lanxin.pandora.tools.Criteria" resultType="int">
+        select count(*) from user
+        <if test="condition!=''">where ${condition}</if>
+    </select>
+    <select id="query" parameterType="String" resultType="com.lanxin.pandora.beans.UserBean">
+        select * from user where id=#{id}
+    </select>
+    <select id="queryList" parameterType="com.lanxin.pandora.tools.Criteria" resultType="com.lanxin.pandora.beans.UserBean">
+        select ${select} from user
+        <if test="condition!=''">where ${condition}</if>
+        <if test="order!=''">order by ${order}</if>
+        limit ${offset}, ${limit}
+    </select>
+    <update id="updateInfo" parameterType="Map">
+        update user set
+        <foreach collection="map" item="value" index="key" separator=",">
+            <if test="key!='id'">
+                ${key}=#{value}
+            </if>
+        </foreach>
+        <where>
+            id=#{map.id}
+        </where>
+    </update>
+    <delete id="delete" parameterType="String">
+        delete from user where id=#{id}
+    </delete>
+</mapper>
