@@ -32,4 +32,8 @@
     <delete id="delete" parameterType="String">
         delete from user where id=#{id}
     </delete>
+
+    <select id="queryByAccount" parameterType="String" resultType="com.lanxin.pandora.beans.UserBean">
+        select * from user where account=#{account}
+    </select>
 </mapper>

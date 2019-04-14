@@ -9,6 +9,8 @@ public class UserTokenBean implements Serializable {
     private String uid = "";
     private String token = "";
     private long timestamp = 0;
+
+    public UserTokenBean(){}
     
     public UserTokenBean(String uid, String token, long timestamp) {
         this.uid = uid;

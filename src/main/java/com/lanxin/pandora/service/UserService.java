@@ -15,5 +15,7 @@ public interface UserService {
     public void delete(String id);
 
     public boolean existAccount(String account);
-    public boolean checkToken(String uid, String token);
+    public boolean checkToken(UserTokenBean userToken);
+    public UserTokenBean login(String account, String password, String ip);
+    public void logout(String id);
 }

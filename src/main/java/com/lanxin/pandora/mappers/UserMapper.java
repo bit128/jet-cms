@@ -17,4 +17,6 @@ public interface UserMapper {
     public List<UserBean> queryList(Criteria criteria);
     public int updateInfo(@Param("map") Map<String, Object> data);
     public int delete(String id);
+
+    public UserBean queryByAccount(String account);
 }

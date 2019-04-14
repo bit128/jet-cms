@@ -19,9 +19,16 @@ import org.springframework.util.DigestUtils;
 @Service
 public class UserServiceImpl implements UserService {
 
+    public final static int STATUS_LOCK     = 0; //冻结
     public final static int STATUS_NORMAL   = 1; //普通用户
     public final static int STATUS_VIP      = 2; //会员
     public final static int STATUS_ADMIN    = 9; //管理员
+
+    public final static int ROLE_CONTENT    = 1;
+    public final static int ROLE_RESOURCE   = 2;
+    public final static int ROLE_USER       = 4;
+    public final static int ROLE_LOG        = 8;
+    public final static int ROLE_COG        = 16;
 
     @Autowired
     private UserMapper userMapper;
@@ -37,7 +44,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkToken(String uid, String token) {
+    public boolean checkToken(UserTokenBean userToken) {
+        if (!userToken.getToken().isEmpty()) {
+            UserBean user = userMapper.query(userToken.getUid());
+            if (user != null) {
+                if (user.getStatus() > STATUS_LOCK && user.getToken().equals(userToken.getToken())) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -46,15 +61,39 @@ public class UserServiceImpl implements UserService {
      * @param uid   用户id
      * @return
      */
-    private UserTokenBean buildToken(String uid) {
+    private UserTokenBean buildToken(String uid, String ip, int count) {
         String token = DigestUtils.md5DigestAsHex(DateTools.uniqid().getBytes());
         long timestamp = Calendar.getInstance().getTimeInMillis() / 1000;
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", uid);
         data.put("token", token);
+        data.put("ip", ip);
+        data.put("count", count + 1);
         data.put("activeTime", timestamp);
         userMapper.updateInfo(data);
         return new UserTokenBean(uid, token, timestamp);
+    }
+
+    @Override
+    public UserTokenBean login(String account, String password, String ip) {
+        UserBean user = userMapper.queryByAccount(account);
+        if (user != null) {
+            password = DigestUtils.md5DigestAsHex(password.getBytes());
+            if (password.equals(user.getPassword())) {
+                if (user.getStatus() > STATUS_LOCK) {
+                    return buildToken(user.getId(), ip, user.getCount());
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void logout(String id) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("token", "");
+        userMapper.updateInfo(data);
     }
     
     @Override
@@ -69,7 +108,7 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(Calendar.getInstance().getTimeInMillis() / 1000);
         user.setStatus(STATUS_NORMAL);
         userMapper.insert(user);
-        return buildToken(user.getId());
+        return buildToken(user.getId(), ip, 0);
     }
 
     @Override
