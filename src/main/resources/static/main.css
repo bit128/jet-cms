@@ -181,16 +181,17 @@ body {
 	color: #666;
 	font-size: 12px;
 }
-.table th {
+.table th,.table td {
 	border: 1px solid #ddd;
-	border-bottom: 2px solid #ccc;
-	padding: 8px 0;
-	background-color: #f6f6f6;
+	border-left: none;
+	border-right: none;
+	padding: 4px 8px;
 }
-.table td {
-	padding: 4px 8px;;
+.table th {
+	border-bottom: 2px solid #ccc;
+	background-color: #f6f6f6;
 	text-align: left;
-	border: 1px solid #ddd;
+	padding: 8px;
 }
 .table td img {
 	border-radius: 4px;

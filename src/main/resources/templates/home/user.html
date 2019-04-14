@@ -27,17 +27,18 @@
         <div class="container">
             <div class="pure-g">
                 <div class="pure-u-1-2">
-                    <button type="button" class="pure-button btn-blue">全部用户</button>
-                    <button type="button" class="pure-button">普通用户</button>
-                    <button type="button" class="pure-button">会员</button>
-                    <button type="button" class="pure-button">管理员</button>
+                    <button type="button" v-on:click="status=''" v-bind:class="{'btn-blue': status===''}" class="pure-button">全部用户</button>
+                    <button type="button" v-on:click="status=0" v-bind:class="{'btn-blue': status===0}" class="pure-button">冻结</button>
+                    <button type="button" v-on:click="status=1" v-bind:class="{'btn-blue': status===1}" class="pure-button">普通用户</button>
+                    <button type="button" v-on:click="status=2" v-bind:class="{'btn-blue': status===2}" class="pure-button">会员</button>
+                    <button type="button" v-on:click="status=9" v-bind:class="{'btn-blue': status===9}" class="pure-button">管理员</button>
                 </div>
                 <div class="pure-u-1-4">
-                    人数：<b>11</b>
+                    人数：<b>{{allCount}}</b>
                 </div>
                 <div class="pure-u-1-4 text-right">
-                    <form class="pure-form">
-                        <input type="text" class="pure-input">
+                    <form class="pure-form" v-on:submit.prevent="search">
+                        <input type="text" class="pure-input" v-model="keyword">
                         <button type="submit" class="pure-button">搜索</button>
                     </form>
                 </div>
@@ -51,42 +52,40 @@
                         <th>扩展信息</th>
                         <th>权限</th>
                         <th style="width:100px;">状态</th>
-                        <th style="width:80px;">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="item in userList">
                         <td>
-                            <img class="u-img" src="/images/default.jpg" />
+                            <img v-if="item.avatar!=''" class="u-img" v-bind:src="'/resource/output/'+item.avatar" />
+                            <img v-else class="u-img" src="/images/default.jpg" />
                         </td>
                         <td>
-                            <big>hongerbo@qq.com</big><br>
-                            <small>13d86ca601b88e2a870eb130d527fad2</small>
+                            <big>{{item.account}}</big><br>
+                            <small>{{item.token}}</small>
                         </td>
                         <td>
-                            <big>秘法师</big> [ <b>男士</b> ]
+                            <big>{{item.name}}</big> [ <b>{{['-','男士','女士'][item.gender]}}</b> ]
                         </td>
                         <td>
-                            <div class="u-time">创建时间：2017-09-12 14:21</div>
-                            <div class="u-time">登录时间：2019-04-11 12:30</div>
-                            <div class="u-time">登录IP：120.27.221.70</div>
+                            <div class="u-time">注册：{{dateFormat('y-m-d h:i', item.createTime*1000)}}</div>
+                            <div class="u-time">登录：{{dateFormat('y-m-d h:i', item.activeTime*1000)}}</div>
+                            <div class="u-time">IP：{{item.ip}}</div>
                         </td>
                         <td>
-                            <label><input type="checkbox" value="1"> 内容</label>
-                            <label><input type="checkbox" value="2"> 资源</label>
-                            <label><input type="checkbox" value="4"> 用户</label>
-                            <label><input type="checkbox" value="8"> 日志</label>
-                            <label><input type="checkbox" value="16"> 配置</label>
+                            <label><input v-on:change="setRole(item.id, 1, $event)" v-bind:checked="item.role & 1" type="checkbox" value="1"> 内容</label>
+                            <label><input v-on:change="setRole(item.id, 2, $event)" v-bind:checked="item.role & 2" type="checkbox" value="2"> 资源</label>
+                            <label><input v-on:change="setRole(item.id, 4, $event)" v-bind:checked="item.role & 4" type="checkbox" value="4"> 用户</label>
+                            <label><input v-on:change="setRole(item.id, 8, $event)" v-bind:checked="item.role & 8" type="checkbox" value="8"> 日志</label>
+                            <label><input v-on:change="setRole(item.id, 16, $event)" v-bind:checked="item.role & 16" type="checkbox" value="16"> 配置</label>
                         </td>
                         <td>
-                            <select>
-                                <option value="1">普通用户</option>
-                                <option value="2">会员</option>
-                                <option value="9">管理员</option>
+                            <select v-on:change="setStatus(item.id, $event)">
+                                <option value="0" v-bind:selected="item.status==0">冻结</option>
+                                <option value="1" v-bind:selected="item.status==1">普通用户</option>
+                                <option value="2" v-bind:selected="item.status==2">会员</option>
+                                <option value="9" v-bind:selected="item.status==9">管理员</option>
                             </select>
-                        </td>
-                        <td>
-                            <button type="button" class="pure-button btn-sm btn-orange">删除</button>
                         </td>
                     </tr>
                 </tbody>
@@ -100,8 +99,86 @@
     const vue = new Vue({
         el: '#app',
         data: {
-            type: 0
+            offset: 0,
+            status: '',
+            keyword: '',
+            userList: [],
+            allCount: 0
+        },
+        components: {
+            pagination: Pagination
+        },
+        watch: {
+            status: function(newVal, oldVal) {
+                vue.offset = 0;
+                vue.loadUserList();
+            }
+        },
+        methods: {
+            init: function(){
+                this.$refs['pageView'].init(LIMIT, 5);
+                this.$refs['pageView'].setCallback(function(page){
+                    vue.offset = (page - 1) * LIMIT;
+                    vue.loadUserList();
+                });
+                this.loadUserList();
+            },
+            search: function() {
+                vue.offset = 0;
+                vue.loadUserList();
+            },
+            setStatus: function(id, event) {
+                httpRequest(
+                    '/user/setStatus.do',
+                    {id: id, status: event.originalTarget.value},
+                    function(res) {
+                        if (res.code != 1) {
+                            alert(res.error);
+                        }
+                    },
+                    'json'
+                );
+            },
+            setRole(id, role, event) {
+                if (! event.originalTarget.checked) {
+                    role = -role;
+                }
+                httpRequest(
+                    '/user/setRole.do',
+                    {id: id, role: role},
+                    function(res) {
+                        if (res.code != 1) {
+                            alert(res.error);
+                        }
+                    },
+                    'json'
+                );
+            },
+            loadUserList: function(){
+                httpRequest(
+                    '/user/getCount.do',
+                    {status: vue.status, keyword: vue.keyword},
+                    function(res) {
+                        if (res.code == 1) {
+                            vue.allCount = res.result;
+                            vue.$refs['pageView'].setData(res.result);
+                        }
+                    },
+                    'json'
+                );
+                httpRequest(
+                    '/user/getList.do',
+                    {offset: vue.offset, limit: LIMIT, status: vue.status, keyword: vue.keyword},
+                    function(res) {
+                        if (res.code == 1) {
+                            vue.userList = res.result;
+                        }
+                    },
+                    'json'
+                );
+            }
         }
     });
+    vue.init();
 </script>
 </html>

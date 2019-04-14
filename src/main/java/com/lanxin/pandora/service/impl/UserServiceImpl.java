@@ -114,7 +114,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int count(String status, String keyword) {
         Criteria criteria = new Criteria();
-        criteria.add("status", status);
+        if (!status.isEmpty()) {
+            criteria.add("status", status);
+        }
         if(!keyword.isEmpty()) {
             criteria.add("account", "%"+keyword+"%", "like", "AND");
         }
@@ -131,7 +133,9 @@ public class UserServiceImpl implements UserService {
         Criteria criteria = new Criteria();
         criteria.setOffset(offset);
         criteria.setLimit(limit);
-        criteria.add("status", status);
+        if (!status.isEmpty()) {
+            criteria.add("status", status);
+        }
         if(!keyword.isEmpty()) {
             criteria.add("account", "%"+keyword+"%", "like", "AND");
         }

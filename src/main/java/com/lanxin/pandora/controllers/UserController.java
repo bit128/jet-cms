@@ -1,8 +1,11 @@
 package com.lanxin.pandora.controllers;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lanxin.pandora.beans.UserBean;
 import com.lanxin.pandora.service.UserService;
 import com.lanxin.pandora.tools.JsonResponse;
 
@@ -58,5 +61,30 @@ public class UserController {
     @RequestMapping(value = "/getList.do", method = RequestMethod.POST)
     public void getList(HttpServletResponse response, int offset, int limit, String status, String keyword) {
         new JsonResponse(response).write(userService.getList(offset, limit, status, keyword));
+    }
+
+    @RequestMapping(value = "/setStatus.do", method = RequestMethod.POST)
+    public void setStatus(HttpServletResponse response, String id, int status) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("status", status);
+        userService.updateInfo(data);
+        new JsonResponse(response).write(JsonResponse.RES_OK);
+    }
+
+    @RequestMapping(value = "/setRole.do", method = RequestMethod.POST)
+    public void setRole(HttpServletResponse response, String id, int role) {
+        JsonResponse jr = new JsonResponse(response);
+        UserBean user = userService.get(id);
+        if (user != null) {
+            role = user.getRole() + role;
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("id", id);
+            data.put("role", role);
+            userService.updateInfo(data);
+            jr.write(JsonResponse.RES_OK);
+        } else {
+            jr.write(JsonResponse.RES_FAIL, null, "用户不存在");
+        }
     }
 }

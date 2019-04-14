@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Dashboard.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        .container {
+            width: 500px;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+        .panel {
+            background-color: #f6f6f6;
+            border-radius: 8px;
+            box-shadow: 4px 4px 10px #ccc;
+        }
+        .panel-header {
+            padding: 10px;
+            font-size: 22px;
+            text-align: center;
+            border-bottom: 2px solid #74cef1;
+        }
+        .panel-body {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+        .pure-form input {
+            margin-bottom: 10px;
+        }
+        .pure-form button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="panel">
+                <div class="panel-header">Jet-CMS 管理员登录</div>
+                <div class="panel-body">
+                    <img src="/images/jet-icon.png" class="logo" />
+                    <form class="pure-form">
+                        <input type="text" class="pure-input-1-2" placeholder="填写账号" />
+                        <input type="password" class="pure-input-1-2" placeholder="填写密码" />
+                        <button type="submit" class="pure-button btn-blue pure-input-1-2">登录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
