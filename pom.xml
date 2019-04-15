@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lanxin</groupId>
-	<artifactId>pandora</artifactId>
+	<artifactId>jet-cms</artifactId>
 	<version>1.0-alpha</version>
-	<name>Pandora</name>
+	<name>Jet-CMS</name>
 	<description>Content Management System by Jet.</description>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
