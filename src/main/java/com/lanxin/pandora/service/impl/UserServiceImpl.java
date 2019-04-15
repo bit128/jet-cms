@@ -19,17 +19,6 @@ import org.springframework.util.DigestUtils;
 @Service
 public class UserServiceImpl implements UserService {
 
-    public final static int STATUS_LOCK     = 0; //冻结
-    public final static int STATUS_NORMAL   = 1; //普通用户
-    public final static int STATUS_VIP      = 2; //会员
-    public final static int STATUS_ADMIN    = 9; //管理员
-
-    public final static int ROLE_CONTENT    = 1;
-    public final static int ROLE_RESOURCE   = 2;
-    public final static int ROLE_USER       = 4;
-    public final static int ROLE_LOG        = 8;
-    public final static int ROLE_COG        = 16;
-
     @Autowired
     private UserMapper userMapper;
 

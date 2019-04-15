@@ -42,8 +42,15 @@
         <span th:include="home/_nav"></span>
         <div class="container">
             <div class="alert alert-info">
-                <p><b>拥有权限：</b>管理员 用户 内容 超级 | <b>最后登录时间：</b>2019-04-01 13:56 | <b>最后登录地址：</b>127.0.0.1</p>
-                <p><b>服务器时间：</b>(北京) 2019-04-02 13:53:50 | <b>时间戳：</b>1554184430 </p>
+                <p>
+                    <b>拥有权限：</b>管理员 用户 内容 超级 |
+                    <b>最后登录时间：</b><span th:text=${session.activeTime}></span> |
+                    <b>最后登录地址：</b><span th:text="${session.ip}"></span>
+                </p>
+                <p>
+                    <b>服务器时间：</b>(北京) <span th:text="${datetime}"></span> |
+                    <b>时间戳：</b><span th:text="${timestamp}"></span>
+                </p>
             </div>
             <div class="menu">
                 <div class="pure-g">

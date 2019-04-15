@@ -3,8 +3,8 @@
         <ul class="nav-menu">
             <li class="nav-title">Jet-CMS 内容管理系统</li>
             <li class="active"><a href="/home"><b style="color:#0095cf">控制台</b></a></li>
-            <li><a href=""><small>欢迎您：</small><b>秘法师</b></a></li>
-            <li><a href="">安全退出</a></li>
+            <li><a href=""><small>欢迎您：</small><b th:text="${session.name}">xxx</b></a></li>
+            <li><a href="/admin/logout">安全退出</a></li>
         </ul>
     </div>
 </div>

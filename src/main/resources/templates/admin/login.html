@@ -7,6 +7,7 @@
     <title>Pandora Dashboard.</title>
     <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/main.js}"></script>
     <script type="text/javascript" th:src="@{/vue-min.js}"></script>
     <style>
         .container {
@@ -14,7 +15,6 @@
         }
         .logo {
             width: 100px;
-            margin-bottom: 20px;
             border-radius: 50%;
         }
         .panel {
@@ -38,6 +38,10 @@
         .pure-form button {
             margin-top: 10px;
         }
+        .tips {
+            font-size: 24px;
+            color: #ff6800;
+        }
     </style>
 </head>
 <body>
@@ -47,9 +51,10 @@
                 <div class="panel-header">Jet-CMS 管理员登录</div>
                 <div class="panel-body">
                     <img src="/images/jet-icon.png" class="logo" />
-                    <form class="pure-form">
-                        <input type="text" class="pure-input-1-2" placeholder="填写账号" />
-                        <input type="password" class="pure-input-1-2" placeholder="填写密码" />
+                    <p class="tips">{{tips}}</p>
+                    <form class="pure-form" v-on:submit.prevent="adminLogin">
+                        <input id="account" v-model="account" type="text" class="pure-input-1-2" placeholder="填写账号" />
+                        <input id="password" v-model="password" type="password" class="pure-input-1-2" placeholder="填写密码" />
                         <button type="submit" class="pure-button btn-blue pure-input-1-2">登录</button>
                     </form>
                 </div>
@@ -57,4 +62,42 @@
         </div>
     </div>
 </body>
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            account: '',
+            password: '',
+            tips: ''
+        },
+        methods: {
+            adminLogin: function() {
+                if (this.account == '') {
+                    alert('请填写账号');
+                    document.getElementById('account').focus();
+                    return;
+                }
+                if (this.password == '') {
+                    alert('请填写密码');
+                    document.getElementById('password').focus();
+                    return;
+                }
+                httpRequest(
+                    '/admin/login.do',
+                    {account: this.account, password: this.password},
+                    function(res) {
+                        if (res.code == 1) {
+                            location.href = '/home';
+                        } else {
+                            vue.tips = res.error;
+                            vue.account = '';
+                            vue.password = '';
+                        }
+                    },
+                    'json'
+                );
+            }
+        }
+    });
+</script>
 </html>

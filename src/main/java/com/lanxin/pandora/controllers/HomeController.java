@@ -1,6 +1,10 @@
 package com.lanxin.pandora.controllers;
 
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
+
+import com.lanxin.pandora.tools.DateTools;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,7 +20,9 @@ public class HomeController {
      * @return
      */
     @RequestMapping("")
-    public String index() {
+    public String index(ModelMap map) {
+        map.addAttribute("datetime", DateTools.dateNow("yyyy-MM-dd HH:mm"));
+        map.addAttribute("timestamp", Calendar.getInstance().getTimeInMillis()/1000);
         return "home/index";
     }
 
