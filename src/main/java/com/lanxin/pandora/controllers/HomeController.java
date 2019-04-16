@@ -47,7 +47,7 @@ public class HomeController {
         if (userService.checkRole(request.getSession(), UserService.ROLE_CONTENT)) {
             return "home/channel";
         } else {
-            return "/home/no_role";
+            return "home/no_role";
         }
     }
 
@@ -63,7 +63,7 @@ public class HomeController {
             data.put("cid", id);
             return "home/content";
         } else {
-            return "/home/no_role";
+            return "home/no_role";
         }
     }
 
@@ -80,7 +80,7 @@ public class HomeController {
             data.put("entry", request.getParameter("entry"));
             return "home/resource";
         } else {
-            return "/home/no_role";
+            return "home/no_role";
         }
     }
 
@@ -93,7 +93,16 @@ public class HomeController {
         if (userService.checkRole(request.getSession(), UserService.ROLE_USER)) {
             return "home/user";
         } else {
-            return "/home/no_role";
+            return "home/no_role";
         }
+    }
+
+    /**
+     * 评论管理 - 页面
+     * @return
+     */
+    @RequestMapping(value = "/comment")
+    public String comment() {
+        return "home/comment";
     }
 }

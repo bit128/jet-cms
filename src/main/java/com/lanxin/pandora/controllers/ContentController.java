@@ -146,7 +146,7 @@ public class ContentController implements ResourceService.ImageOpt {
      */
     @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     public void delete(HttpServletResponse response, String id) {
-        if (contentService.count(id, null) == 0) {
+        if (contentService.count(id, "") == 0) {
             contentService.delete(id);
             new JsonResponse(response).write(JsonResponse.RES_OK);
         } else {

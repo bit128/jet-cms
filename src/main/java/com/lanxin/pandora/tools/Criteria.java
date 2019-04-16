@@ -35,6 +35,17 @@ public class Criteria {
 	public void add(String key, String value, String symbol, String operator) {
 		addCondition(key + " " + symbol + " '" + addSlashes(value) +"'", operator);
 	}
+
+	/**
+	 * 通过键值添加查询条件（如果值为空则忽略）
+	 * @param key
+	 * @param value
+	 */
+	public void addNotEmpty(String key, String value) {
+		if (!value.isEmpty()) {
+			addCondition(key + "='" + addSlashes(value) +"'");
+		}
+	}
 	
 	/**
 	 * 添加自定义查询条件

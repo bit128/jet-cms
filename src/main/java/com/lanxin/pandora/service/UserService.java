@@ -18,8 +18,7 @@ public interface UserService {
     public final static int ROLE_CONTENT    = 1;
     public final static int ROLE_RESOURCE   = 2;
     public final static int ROLE_USER       = 4;
-    public final static int ROLE_LOG        = 8;
-    public final static int ROLE_COG        = 16;
+    public final static int ROLE_COMMENT    = 8;
     
     public UserTokenBean insert(String account, String password, String name, String ip);
     public int count(String status, String keyword);

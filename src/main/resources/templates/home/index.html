@@ -22,7 +22,6 @@
             text-decoration: none;
             box-shadow: 2px 2px 4px #ddd;
         }
-
         .menu a:hover {
             background: linear-gradient(to left top, #c0edff, #f9f9f9);
         }
@@ -62,14 +61,14 @@
                     </div>
                     <div class="pure-u-1-6">
                         <a href="/home/resource">
-                            <img th:src="@{/images/png-0841.png}" />
+                            <img th:src="@{/images/png-0071.png}" />
                             <div class="menu-name">资源</div>
                         </a>
                     </div>
                     <div class="pure-u-1-6">
-                        <a href="">
-                            <img th:src="@{/images/png-0017.png}" />
-                            <div class="menu-name">关键词</div>
+                        <a href="/home/comment">
+                            <img th:src="@{/images/png-0630.png}" />
+                            <div class="menu-name">评论</div>
                         </a>
                     </div>
                     <div class="pure-u-1-6">
@@ -78,6 +77,7 @@
                             <div class="menu-name">用户</div>
                         </a>
                     </div>
+                    <!--
                     <div class="pure-u-1-6">
                         <a href="">
                             <img th:src="@{/images/png-0814.png}" />
@@ -90,6 +90,7 @@
                             <div class="menu-name">配置</div>
                         </a>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -104,8 +105,7 @@
                 1: '内容',
                 2: '资源',
                 4: '用户',
-                8: '日志',
-                16: '配置'
+                8: '评论'
             },
             roleText: ''
         },

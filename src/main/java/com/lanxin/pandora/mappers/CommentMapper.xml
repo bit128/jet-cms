@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanxin.pandora.mappers.CommentMapper">
+    <insert id="insert" parameterType="com.lanxin.pandora.beans.CommentBean">
+        insert into comment (id,bid,uid,content,reply,createTime,replyTime,status) 
+        values (#{id},#{bid},#{uid},#{content},#{reply},#{createTime},#{replyTime},#{status})
+    </insert>
+    <select id="count" parameterType="com.lanxin.pandora.tools.Criteria" resultType="int">
+        select count(*) from comment
+        <if test="condition!=''">where ${condition}</if>
+    </select>
+    <select id="query" parameterType="String" resultType="com.lanxin.pandora.beans.CommentBean">
+        select * from comment where id=#{id}
+    </select>
+    <select id="queryList" parameterType="com.lanxin.pandora.tools.Criteria" resultType="com.lanxin.pandora.beans.CommentBean">
+        select ${select} from comment
+        <if test="condition!=''">where ${condition}</if>
+        <if test="order!=''">order by ${order}</if>
+        limit ${offset}, ${limit}
+    </select>
+    <update id="updateInfo" parameterType="Map">
+        update comment set
+        <foreach collection="map" item="value" index="key" separator=",">
+            <if test="key!='id'">
+                ${key}=#{value}
+            </if>
+        </foreach>
+        <where>
+            id=#{map.id}
+        </where>
+    </update>
+    <delete id="delete" parameterType="String">
+        delete from comment where id=#{id}
+    </delete>
+</mapper>
