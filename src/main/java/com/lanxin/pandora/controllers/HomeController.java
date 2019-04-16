@@ -4,8 +4,12 @@ import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.lanxin.pandora.service.UserService;
 import com.lanxin.pandora.tools.DateTools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class HomeController {
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 后台首页面
+     * 
      * @return
      */
     @RequestMapping("")
-    public String index(ModelMap map) {
-        map.addAttribute("datetime", DateTools.dateNow("yyyy-MM-dd HH:mm"));
-        map.addAttribute("timestamp", Calendar.getInstance().getTimeInMillis()/1000);
-        return "home/index";
+    public String index(HttpServletRequest request, ModelMap map) {
+        if (request.getSession().getAttribute("uid") == null) {
+            return "admin/login";
+        } else {
+            map.addAttribute("datetime", DateTools.dateNow("yyyy-MM-dd HH:mm"));
+            map.addAttribute("timestamp", Calendar.getInstance().getTimeInMillis()/1000);
+            return "home/index";
+        }
     }
 
     /**
@@ -31,8 +43,12 @@ public class HomeController {
      * @return
      */
     @RequestMapping("/channel")
-    public String channel() {
-        return "home/channel";
+    public String channel(HttpServletRequest request) {
+        if (userService.checkRole(request.getSession(), UserService.ROLE_CONTENT)) {
+            return "home/channel";
+        } else {
+            return "/home/no_role";
+        }
     }
 
     /**
@@ -42,9 +58,13 @@ public class HomeController {
      * @return
      */
     @RequestMapping(value = "/content/id/{id}")
-    public String content(@PathVariable String id, ModelMap data) {
-        data.put("cid", id);
-        return "home/content";
+    public String content(HttpServletRequest request, @PathVariable String id, ModelMap data) {
+        if (userService.checkRole(request.getSession(), UserService.ROLE_CONTENT)) {
+            data.put("cid", id);
+            return "home/content";
+        } else {
+            return "/home/no_role";
+        }
     }
 
     /**
@@ -55,9 +75,13 @@ public class HomeController {
      */
     @RequestMapping(value = "/resource")
     public String resource(HttpServletRequest request, ModelMap data) {
-        data.put("bid", request.getParameter("bid"));
-        data.put("entry", request.getParameter("entry"));
-        return "home/resource";
+        if (userService.checkRole(request.getSession(), UserService.ROLE_RESOURCE)) {
+            data.put("bid", request.getParameter("bid"));
+            data.put("entry", request.getParameter("entry"));
+            return "home/resource";
+        } else {
+            return "/home/no_role";
+        }
     }
 
     /**
@@ -65,7 +89,11 @@ public class HomeController {
      * @return
      */
     @RequestMapping(value = "/user")
-    public String user() {
-        return "home/user";
+    public String user(HttpServletRequest request) {
+        if (userService.checkRole(request.getSession(), UserService.ROLE_USER)) {
+            return "home/user";
+        } else {
+            return "/home/no_role";
+        }
     }
 }

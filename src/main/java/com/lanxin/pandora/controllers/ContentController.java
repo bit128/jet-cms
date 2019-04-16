@@ -152,6 +152,5 @@ public class ContentController implements ResourceService.ImageOpt {
         } else {
             new JsonResponse(response).write(JsonResponse.RES_FAIL, null, "安全起见，需要先删除子栏目");
         }
-        
     }
 }

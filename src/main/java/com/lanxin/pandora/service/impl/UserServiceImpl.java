@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.lanxin.pandora.beans.UserBean;
 import com.lanxin.pandora.beans.UserTokenBean;
 import com.lanxin.pandora.mappers.UserMapper;
@@ -38,6 +40,21 @@ public class UserServiceImpl implements UserService {
             UserBean user = userMapper.query(userToken.getUid());
             if (user != null) {
                 if (user.getStatus() > STATUS_LOCK && user.getToken().equals(userToken.getToken())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkRole(HttpSession session, int role) {
+        if (session.getAttribute("uid") != null) {
+            UserBean user = userMapper.query(session.getAttribute("uid").toString());
+            if (user != null) {
+                int roles = user.getRole();
+                int result = roles & role;
+                if (result > 0) {
                     return true;
                 }
             }

@@ -14,9 +14,9 @@ public class TestController {
     @RequestMapping("/register")
     public String register() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("account", "530521671@qq.com");
+        params.put("account", "hongerbo@qq.com");
         params.put("password", "123456");
-        params.put("name", "迦叶兰若");
+        params.put("name", "秘法师");
         Curl curl = new Curl(Curl.POST, "http://127.0.0.1:8080/user/register.do");
         curl.setParams(params);
         return curl.sendRequest();

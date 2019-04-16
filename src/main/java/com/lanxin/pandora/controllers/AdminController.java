@@ -27,11 +27,20 @@ public class AdminController {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 管理员登录-页面
+     * @return
+     */
     @RequestMapping("/loginPage")
     public String loginPage() {
         return "admin/login";
     }
 
+    /**
+     * 管理员登录
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     public void login(HttpServletRequest request, HttpServletResponse response) {
         JsonResponse jr = new JsonResponse(response);
@@ -62,12 +71,18 @@ public class AdminController {
         }
     }
 
+    /**
+     * 管理与登出
+     * @param request
+     * @param response
+     */
     @RequestMapping("logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute("uid");
         session.removeAttribute("role");
         session.removeAttribute("name");
+        session.removeAttribute("activeTime");
         session.removeAttribute("ip");
         try {
             response.sendRedirect("/admin/loginPage");

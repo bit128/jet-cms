@@ -43,7 +43,7 @@
         <div class="container">
             <div class="alert alert-info">
                 <p>
-                    <b>拥有权限：</b>管理员 用户 内容 超级 |
+                    <b>拥有权限：</b>{{roleText}} |
                     <b>最后登录时间：</b><span th:text=${session.activeTime}></span> |
                     <b>最后登录地址：</b><span th:text="${session.ip}"></span>
                 </p>
@@ -95,4 +95,33 @@
         </div>
     </div>
 </body>
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            role: '[[${session.role}]]',
+            roleField: {
+                1: '内容',
+                2: '资源',
+                4: '用户',
+                8: '日志',
+                16: '配置'
+            },
+            roleText: ''
+        },
+        methods: {
+            init: function() {
+                let role = parseInt(this.role);
+                let roleText = [];
+                for(let i in this.roleField) {
+                    if (role & i) {
+                        roleText += this.roleField[i] + ' ';
+                    }
+                }
+                this.roleText = roleText;
+            }
+        }
+    });
+    vue.init();
+</script>
 </html>

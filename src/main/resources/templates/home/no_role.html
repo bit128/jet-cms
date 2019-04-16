@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pandora Dashboard.</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/main.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+    <style>
+        .info {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            padding: 60px 0 40px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f6f6f6;
+        }
+        .info p a {
+            font-size: 14px;
+            color: #0095cf;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span th:include="home/_nav"></span>
+        <div class="container">
+            <div class="info">
+                暂时无权访问和操作
+                <p><a href="/home">返回控制台</a></p>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
