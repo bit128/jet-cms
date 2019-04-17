@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.lanxin.pandora.service.UserService;
 import com.lanxin.pandora.tools.DateTools;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

@@ -1,0 +1,159 @@
+.container {
+    width: 1170px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #333;
+}
+
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+a {
+    color: #7096ff;
+}
+a:hover {
+    color: #5c87ff;
+}
+
+
+.nav {
+    background-color: #7096ff;
+}
+.nav a {
+    color: #cedbff;
+    text-decoration: none;
+}
+.nav-title {
+    font-size: 18px;
+    color: #ffffff !important;
+}
+.nav ul,.nav ul li {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+.nav ul {
+    margin-left: 30px;
+}
+.nav li a {
+    display: inline-block;
+    padding: 8px 12px;
+}
+.nav li a:hover {
+    color: #ffffff;
+}
+
+.footer {
+    padding: 20px 0 10px;
+    background: linear-gradient(to top, #ffffff, #eeeeee);
+}
+.foot-link a {
+    display: inline-block;
+    margin: 5px;
+}
+.foot-mark {
+    padding-top: 10px;
+    color: #666666;
+    font-size: 13px;
+}
+
+.title {
+    border-left: 5px solid #7096ff;
+    padding-left: 10px;
+    font-size: 18px;
+    color: #5c87ff;
+    margin-bottom: 20px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #eeeeee;
+    font-size: 12px;
+    line-height: 22px;
+    padding: 0 10px;
+    border-radius: 22px;
+}
+
+/*---- home ----*/
+.content-list {
+    padding: 20px 20px 20px 0;
+    border-right: 1px solid #eeeeee;
+}
+.content-item {
+    margin-bottom: 20px;
+}
+.content-time {
+    color: #aaaaaa;
+    font-size: 12px;
+    padding: 5px 0;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 20px;
+}
+.content-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #555555;
+    display: block;
+    text-decoration: none;
+}
+.content-cover {
+    max-width: 150px;
+}
+.content-summary{
+    color: #666666;
+}
+.right-menu {
+    padding: 20px 0 20px 20px;
+}
+
+.lesson-panel {
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    background: linear-gradient(to left top, #f0f0f0, #f6f6f6);
+    border-radius: 4px;
+    box-shadow: 2px 2px 6px #dddddd;
+    margin-bottom: 20px;
+}
+.lesson-panel:hover {
+    background: linear-gradient(to left top, #ebefff, #f6f6f6);
+}
+.lesson-title {
+    font-size: 22px;
+    color: #555555;
+}
+.lesson-footer {
+    border-top: 1px dotted #cccccc;
+    font-size: 12px;
+    color: #999999;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.lesson-menu {
+    margin: 20px 0 0;
+    padding: 0;
+}
+.lesson-menu li {
+    list-style: none;
+}
+.lesson-menu li.active a {
+    background-color: #ebefff;
+    color: #5c87ff;
+    font-weight: bold;
+}
+.lesson-menu li a {
+    display: block;
+    padding: 8px 12px;
+    margin-bottom: 1px;
+    font-size: 14px;
+    color: #666666;
+    text-decoration: none;
+    border-radius: 18px;
+}

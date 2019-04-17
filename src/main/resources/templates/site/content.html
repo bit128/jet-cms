@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/pure-min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/home.css}" />
+    <script type="text/javascript" th:src="@{/vue-min.js}"></script>
+</head>
+<body>
+    <div id="app">
+        <span th:include="site/_nav"></span>
+        <div class="container">
+            <div class="pure-g">
+                <!--文章列表-->
+                <div class="pure-u-3-4">
+                    <div class="content-list">
+
+                        <div class="content-item">
+                            <div class="pure-g">
+                                <div class="pure-u-3-4">
+                                    <a href="/site/content" class="content-title">JavaScript基础课：让我们看看看神奇的函数</a>
+                                    <div class="content-keyword">
+                                        <a href="javascript:;" class="tag">应用课</a>
+                                        <a href="javascript:;" class="tag">语法课</a>
+                                    </div>
+                                    <div class="content-time" style="margin-top:16px;">更新时间：2019-04-17 12:00</div>
+                                </div>
+                                <div class="pure-u-1-4 text-right">
+                                    <img src="/images/default.jpg" class="content-cover" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>这里是文章的正文</p>
+
+                    </div>
+                </div>
+                <!--右侧目录-->
+                <div class="pure-u-1-4">
+                    <div class="right-menu">
+                        <a href="javascript:;" class="lesson-panel">
+                            <div class="lesson-title">JavaScript初学者之旅</div>
+                            <div class="pure-g lesson-footer">
+                                <div class="pure-u-1-2">课时：10</div>
+                                <div class="pure-u-1-2 text-right">修订：2019-04-17</div>
+                            </div>
+                        </a>
+                        <ul class="lesson-menu">
+                            <li><a href="">第一课：什么是JavaScript</a></li>
+                            <li class="active"><a href="">第二课：从控制台输出内容</a></li>
+                            <li><a href="">第三课：类型、变量和常量</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="foot-link text-center">
+                    <a href="javascript:;">关于我们</a>
+                    <a href="javascript:;">技术支持</a>
+                    <a href="javascript:;">意见建议</a>
+                    <a href="javascript:;">合作事宜</a>
+                    <a href="javascript:;">联系我们</a>
+                </div>
+                <div class="foot-mark text-center">
+                    &copy; 2019 蓝欣科技 版权所有 浙ICP备 2211208号
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
